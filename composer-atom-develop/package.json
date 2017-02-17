@@ -1,0 +1,21 @@
+{
+  "name": "ibm-composer-atom",
+  "version": "0.0.1",
+  "description": "IBM Composer language support in Atom",
+  "engines": {
+    "atom": "*",
+    "node": "*"
+  },
+  "homepage": "https://github.ibm.com/Blockchain-WW-Labs/Composer-Atom",
+  "repository": {
+    "type": "git",
+    "url": "https://github.ibm.com/Blockchain-WW-Labs/Composer-Atom"
+  },
+  "license": "IBM",
+  "bugs": {
+    "url": "https://github.ibm.com/Blockchain-WW-Labs/Composer-Atom/issues"
+  },
+  "devDependencies": {
+    "coffeelint": "^1.10.1"
+  }
+}
