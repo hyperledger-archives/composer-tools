@@ -1,0 +1,47 @@
+{
+  "asset": {
+		"prefix": "asset",
+		"body": [
+			"asset ${1:assetName} identified by ${2:assetKey} {",
+			"\to String ${2}$0",
+			"}"
+		],
+		"description": "Composer Asset"
+	},
+	"participant": {
+		"prefix": "participant",
+		"body": [
+			"participant ${1:participantName} identified by ${2:participantKey} {",
+			"\to String ${2}$0",
+			"}"
+		],
+		"description": "Composer Participant"
+	},
+	"transaction": {
+		"prefix": "transaction",
+		"body": [
+			"transaction ${1:transactionName} identified by ${2:transactionKey} {",
+			"\to String ${2}$0",
+			"}"
+		],
+		"description": "Composer Transaction"
+	},
+	"concept": {
+		"prefix": "concept",
+		"body": [
+			"concept ${1:conceptName} {",
+			"\to String ${1}$0",
+			"}"
+		],
+		"description": "Composer Concept"
+	},
+	"enum": {
+		"prefix": "enum",
+		"body": [
+			"enum ${1:enumName} {",
+			"\to ${2:ITEM}$0",
+			"}"
+		],
+		"description": "Composer Enum"
+	}
+}
