@@ -1,0 +1,89 @@
+{
+  "name": "fabric-composer",
+  "displayName": "Fabric Composer Verifier",
+  "description": "Fabric Composer Verifier",
+  "author": "MGK",
+  "license": "Apache",
+  "version": "0.0.12",
+  "publisher": "IBM",
+  "icon": "icon.png",
+  "engines": {
+    "vscode": "^1.8.0"
+  },
+  "categories": [
+    "Languages",
+    "Snippets",
+    "Other"
+  ],
+  "activationEvents": [
+    "onLanguage:composer"
+  ],
+  "main": "./out/src/extension",
+  "contributes": {
+    "configuration": {
+      "type": "object",
+      "title": "Composer configuration",
+      "properties": {
+        "composer.maxNumberOfProblems": {
+          "type": "number",
+          "default": 10,
+          "description": "Controls the maximum number of problems produced by the server."
+        },
+        "composer.trace.server": {
+          "type": "string",
+          "enum": [
+            "on",
+            "messages",
+            "verbose"
+          ],
+          "default": "off",
+          "description": "Traces the communication between VSCode and the languageServer service."
+        }        
+      }
+    },
+    "languages": [
+      {
+        "id": "composer",
+        "aliases": [
+          "Fabric-Composer",
+          "Composer"
+        ],
+        "extensions": [
+          ".cto"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "composer",
+        "scopeName": "source.composer",
+        "path": "./syntaxes/composer.tmLanguage.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "composer",
+        "path": "./snippets/composer.json"
+      }
+    ]
+
+  },
+  "scripts": {
+    "vscode:prepublish": "tsc -p ./",
+    "compile": "tsc -watch -p ./",
+    "update-vscode": "node ./node_modules/vscode/bin/install",
+    "postinstall": "node ./node_modules/vscode/bin/install",
+    "package": "node ./node_modules/vsce/out/vsce package"
+  },
+  "devDependencies": {
+    "@types/mocha": "^2.2.33",
+    "@types/node": "^6.0.52",
+    "typescript": "^2.1.5",
+    "vscode": "^1.0.3",
+    "vsce": "^1.18.0"
+  },
+  "dependencies": {
+    "vscode-languageclient": "^3.0.3"
+  }
+}
