@@ -1,5 +1,5 @@
 {
-  "name": "fabric-composer",
+  "name": "fabric-composer-vscode",
   "displayName": "Fabric Composer Verifier",
   "description": "Fabric Composer Verifier",
   "author": "MGK",
@@ -9,6 +9,10 @@
   "icon": "icon.png",
   "engines": {
     "vscode": "^1.8.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fabric-composer/tools"
   },
   "categories": [
     "Languages",
@@ -38,7 +42,7 @@
           ],
           "default": "off",
           "description": "Traces the communication between VSCode and the languageServer service."
-        }        
+        }
       }
     },
     "languages": [

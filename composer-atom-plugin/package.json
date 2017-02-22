@@ -6,14 +6,14 @@
     "atom": "*",
     "node": "*"
   },
-  "homepage": "https://github.ibm.com/Blockchain-WW-Labs/Composer-Atom",
+  "homepage": "https://github.com/fabric-composer/tools",
   "repository": {
     "type": "git",
-    "url": "https://github.ibm.com/Blockchain-WW-Labs/Composer-Atom"
+    "url": "https://github.com/fabric-composer/tools"
   },
   "license": "IBM",
   "bugs": {
-    "url": "https://github.ibm.com/Blockchain-WW-Labs/Composer-Atom/issues"
+    "url": "https://github.com/fabric-composer/fabric-composer/issues"
   },
   "devDependencies": {
     "coffeelint": "^1.10.1"
