@@ -13,4 +13,4 @@ Switch to the root directory of the clone on your local disk
 
 Run the command 'apm link' in a terminal
 
-Relaunch Atom. Youl should now have syntax highlighting for Composer .cto files.
+Relaunch Atom. You should now have syntax highlighting for Composer .cto files.

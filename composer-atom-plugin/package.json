@@ -9,7 +9,7 @@
   "homepage": "https://github.com/fabric-composer/tools",
   "repository": {
     "type": "git",
-    "url": "https://github.com/fabric-composer/tools"
+    "url": "https://github.com/fabric-composer/tools.git"
   },
   "license": "IBM",
   "bugs": {
@@ -17,5 +17,11 @@
   },
   "devDependencies": {
     "coffeelint": "^1.10.1"
+  },
+  "license-check-config": {
+    "path": "header.txt",
+    "blocking": true,
+    "logInfo": false,
+    "logError": true
   }
 }
