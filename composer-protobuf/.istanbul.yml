@@ -1,0 +1,12 @@
+instrumentation:
+    excludes:
+        - "lib/protobuf.js"
+        - "out/**"
+        - "scripts/**"
+        - "systest/**"
+check:
+    global:
+        statements: 97
+        branches: 94
+        functions: 98
+        lines: 97

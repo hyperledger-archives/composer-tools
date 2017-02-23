@@ -1,6 +1,5 @@
-# README
-## This is the README for the Composer verifier 
+# Fabric Composer Extension for VSCode 
 
-* Currrently this is in beta and not for production use.
-* Many problems exist, but no files should be lost!
-
+This VSCode extension parses .cto files using the Fabric Composer parser
+and reports any validatione errors. It is currently beta and may have issues
+with models that use imports and span multiple files.

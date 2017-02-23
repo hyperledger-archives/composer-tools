@@ -13,7 +13,7 @@ import {
 } from 'vscode-languageserver';
 
 // Create a new Composer model manager to handle all open cto documents in the workspace.
-const ModelManager = require('composer-common/index').ModelManager;
+const ModelManager = require('composer-common').ModelManager;
 let modelManager = new ModelManager();
 
 // Create a connection for the server. The connection uses Node's IPC as a transport
@@ -97,18 +97,12 @@ function validateTextDocument(textDocument: TextDocument): void {
 		var finalMsg = fullMsg;
 
 		//some messages do not have a line and  column
-		var index = fullMsg.lastIndexOf(". Line ");
-		if (index != -1) {
-			finalMsg = fullMsg.substr(0, index + 1);
-			var current = fullMsg.substr(index + 7); //step over ". Line "  
-			curLine = parseInt(current, 10) - 1; //Composer errors are 1 based
-			if (isNaN(curLine) || curLine < 0) { curLine = 0; } //sanity check
-			endLine = curLine; //in the normal case only highlight the current line
-			index = current.lastIndexOf(" column ");
-			current = current.substr(index + 8); //step over " column "
-			curColumn = parseInt(current, 10) - 1; //Composer errors are 1 based
-			if (isNaN(curColumn) || curColumn < 0) { curColumn = 0; } //sanity check
-			endColumn = curColumn; //set to the same to highlight the current word
+		var location = err.getFileLocation();
+		if (location) {
+			curLine = location.start.line-1; //Composer errors are 1 based
+			endLine = location.end.line-1;
+			curColumn = location.start.column-1; //Composer errors are 1 based
+			endColumn = location.end.column-1;
 		} else {
 			endLine = textDocument.lineCount;
 		}
