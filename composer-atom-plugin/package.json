@@ -1,5 +1,5 @@
 {
-  "name": "ibm-composer-atom",
+  "name": "composer-atom-plugin",
   "version": "0.0.1",
   "description": "IBM Composer language support in Atom",
   "engines": {
