@@ -77,9 +77,9 @@ connection.onDidChangeConfiguration((change) => {
 function validateTextDocument(textDocument: TextDocument): void {
 	let diagnostics: Diagnostic[] = [];
 
-	var curLine = 0; //vscode lines are 0 based.
-	var endLine = 0; // "" 
-	var curColumn = 0 //vscode columns are 0 based
+	var curLine   = 0; //vscode lines are 0 based.
+	var curColumn = 0; //vscode columns are 0 based
+	var endLine   = textDocument.lineCount; //default to highlighting to the end of document
 	var endColumn = Number.MAX_VALUE //default to highlighting to the end of the line
 	try {
 		//note - this is the FULL document text as we can't do incremental yet! 
@@ -90,21 +90,38 @@ function validateTextDocument(textDocument: TextDocument): void {
 			//if we get here, everything is good
 		}
 	} catch (err) {
-		//quick hack to extract Line and Column info -
-		//these should be in the exception object really.
+		//extract Line and Column info
 		var fullMsg = err.name + ": " + err.message;
-		connection.console.log(fullMsg);
+		//connection.console.log(fullMsg); //debug assist
 		var finalMsg = fullMsg;
 
-		//some messages do not have a line and  column
-		var location = err.getFileLocation();
-		if (location) {
-			curLine = location.start.line-1; //Composer errors are 1 based
-			endLine = location.end.line-1;
-			curColumn = location.start.column-1; //Composer errors are 1 based
-			endColumn = location.end.column-1;
-		} else {
-			endLine = textDocument.lineCount;
+		//some messages do not have a line and column
+		if(typeof err.getFileLocation === "function") { 
+			//genuine composer exception
+			var location = err.getFileLocation();
+			//we will take the default if we have no location
+			if(location) {
+			  curLine   = location.start.line-1; //Composer errors are 1 based
+			  endLine   = location.end.line-1;
+			  curColumn = location.start.column-1; //Composer errors are 1 based
+			  endColumn = location.end.column-1;
+			}
+	  } else {
+			//possible composer exception
+      var index = fullMsg.lastIndexOf(". Line "); 
+			if (index != -1) { 
+				//manually pull out what we can.
+				finalMsg = fullMsg.substr(0, index + 1); 
+				var current = fullMsg.substr(index + 7); //step over ". Line "   
+				curLine = parseInt(current, 10) - 1; //Composer errors are 1 based 
+				if (isNaN(curLine) || curLine < 0) { curLine = 0; } //sanity check 
+				endLine = curLine; //in the normal case only highlight the current line 
+				index = current.lastIndexOf(" column "); 
+				current = current.substr(index + 8); //step over " column " 
+				curColumn = parseInt(current, 10) - 1; //Composer errors are 1 based 
+				if (isNaN(curColumn) || curColumn < 0) { curColumn = 0; } //sanity check 
+				endColumn = curColumn; //set to the same to highlight the current word 
+			}
 		}
 
 		//build the message to send back to the client 
