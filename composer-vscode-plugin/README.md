@@ -8,13 +8,13 @@ with models that use imports and span multiple files.
 
 Generate the installable VSIX file:
 
-`
+```
 git clone https://github.com/fabric-composer/tools.git
 cd tools
 cd composer-vscode-plugin/client
 npm install
 npm run package
-`
+```
 
 1. Launch VSCode
 2. View > Extensions
