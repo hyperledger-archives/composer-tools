@@ -1,8 +1,8 @@
 # Fabric Composer Extension for VSCode 
 
 This VSCode extension parses .cto files using the Fabric Composer parser
-and reports any validatione errors. It is currently beta and may have issues
-with models that use imports and span multiple files.
+and reports any validatione errors. It is currently beta and may have issues.
+Please raise any problems you find.
 
 ## Manual Build and Install
 
@@ -10,8 +10,10 @@ Generate the installable VSIX file:
 
 ```
 git clone https://github.com/fabric-composer/tools.git
-cd tools
-cd composer-vscode-plugin/client
+cd tools/composer-vscode-plugin/server
+npm install
+npm run compile
+cd ../client
 npm install
 npm run package
 ```
