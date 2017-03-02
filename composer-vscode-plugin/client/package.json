@@ -1,8 +1,8 @@
 {
-  "name": "fabric-composer-vscode",
+  "name": "composer-support-client",
   "displayName": "Fabric Composer Verifier",
   "description": "Fabric Composer Verifier",
-  "author": "MGK",
+  "author": "Fenglian Xu",
   "license": "Apache",
   "version": "0.0.12",
   "publisher": "IBM",

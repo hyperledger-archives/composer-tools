@@ -2,7 +2,7 @@
   "name": "composer-support-server",
   "description": "Composer Verifier Server",
   "version": "0.0.2",
-  "author": "MGK",
+  "author": "Fenglian Xu",
   "license": "Apache",
   "engines": {
     "node": "*"
