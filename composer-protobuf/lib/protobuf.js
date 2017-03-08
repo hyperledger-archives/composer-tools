@@ -15,7 +15,7 @@
 'use strict';
 
 const program = require('commander');
-const ProtobufConverter = require('protobufconverter');
+const ProtobufConverter = require('./protobufconverter');
 
 /**
  * Convert Google Protobuf definitions to Composer concepts
