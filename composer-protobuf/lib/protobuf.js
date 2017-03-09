@@ -15,7 +15,7 @@
 'use strict';
 
 const program = require('commander');
-const ProtobufConverter = require('./protobufconverter');
+const ProtobufBatchConverter = require('./protobufbatchconverter');
 
 /**
  * Convert Google Protobuf definitions to Composer concepts
@@ -29,9 +29,4 @@ program
     .option('-o, --outputDir <outputDir>', 'Output directory')
     .parse(process.argv);
 
-if (!program.args || !program.args.length) {
-    program.help();
-}
-
-const converter = new ProtobufConverter();
-converter.convert(program.inputDir, program.outputDir);
+ProtobufBatchConverter.convert(program.inputDir, program.outputDir);
