@@ -37,6 +37,10 @@ The converter does not correctly resolve protobuf imports. If your protobuf file
 
 ## Usage
 
+### Install node
+Go the composer-protobuf directory and run below command:
+`npm install`
+
 ### Command Line
 
 You can batch convert a set of `.proto` files under a root directory by running:
