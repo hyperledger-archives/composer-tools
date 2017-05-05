@@ -1,7 +1,7 @@
 {
   "name": "composer-protobuf",
   "version": "0.4.4",
-  "description": "Fabric Composer Protobuf support",
+  "description": "Hyperledger Composer Protobuf support",
   "main": "index.js",
   "scripts": {
     "pretest": "npm run lint",
@@ -13,14 +13,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/fabric-composer/tools.git"
+    "url": "https://github.com/hyperledger/composer-tools"
   },
   "keywords": [
     "blockchain",
     "hyperledger",
     "solutions"
   ],
-  "author": "Fabric Composer",
+  "author": "Hyperledger Composer",
   "license": "Apache-2.0",
   "devDependencies": {
     "chai": "^3.5.0",
