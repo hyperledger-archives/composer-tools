@@ -1,6 +1,6 @@
-# Fabric Composer Protobuf
+# Hyperledger Composer Protobuf
 
-This module converts Google Protobuf files into Fabric Composer models.
+This module converts Google Protobuf files into Hyperledger Composer models.
 It is currently experimental and has a number of limitations.
 
 Despite these limitations it is a useful tool to convert protobuf data definitions from an existing project to bootstrap a new Composer project. After conversion the generated Composer models will need to be edited to convert some Concepts into Assets, Participants or Transactions.

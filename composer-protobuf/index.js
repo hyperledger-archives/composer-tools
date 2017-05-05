@@ -15,7 +15,7 @@
 'use strict';
 
 /**
- * Fabric-Composer Protobuf module.
+ * Hyperledger-Composer Protobuf module.
  * @module composer-protobuf
  */
 
