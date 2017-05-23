@@ -12,5 +12,15 @@
     "fabric-ca-client": "1.0.0-alpha.1",
     "fabric-client": "1.0.0-alpha.1",
     "homedir": "^0.6.0"
+  },
+  "scripts": {
+     "buildzip" : "gulp --gulpfile .travis/gulp.js"
+
+
+
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-zip": "^4.0.0"
   }
 }
