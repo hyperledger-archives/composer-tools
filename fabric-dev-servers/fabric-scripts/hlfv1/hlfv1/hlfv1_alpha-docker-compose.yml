@@ -38,6 +38,14 @@ services:
 #        - ./tls/orderer:/etc/hyperledger/tls/orderer
 #        - ./tls/peers:/etc/hyperledger/tls/peers
 
+  couchdb0:
+    container_name: couchdb0
+    image: hyperledger/fabric-couchdb:x86_64-1.0.0-alpha
+##   Uncomment the port mapping if you want to expose the CouchDB service,
+##   for example to utilize Fauxton User Interface in dev environments.
+    ports:
+      - "5984:5984"
+
   peer0:
     container_name: peer0
     image: hyperledger/fabric-peer:x86_64-1.0.0-alpha
@@ -61,6 +69,8 @@ services:
       # bridge network as the peers
       # https://docs.docker.com/compose/networking/
       - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=hlfv1_default
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb0:5984      
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric
     command: peer node start --peer-defaultchain=false
     ports:
@@ -72,7 +82,17 @@ services:
 #        - ./tls/peers/peer0:/etc/hyperledger/tls
     depends_on:
       - orderer0
+      - couchdb0
 
+
+  couchdb1:
+      container_name: couchdb1
+      image: hyperledger/fabric-couchdb:x86_64-1.0.0-alpha
+  ##   Uncomment the port mapping if you want to expose the CouchDB service,
+  ##   for example to utilize Fauxton User Interface in dev environments.
+      ports:
+        - "6984:5984"
+     
   peer1:
     container_name: peer1
     image: hyperledger/fabric-peer:x86_64-1.0.0-alpha
@@ -95,6 +115,8 @@ services:
       # bridge network as the peers
       # https://docs.docker.com/compose/networking/
       - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=hlfv1_default
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb1:5984      
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric
     command: peer node start --peer-defaultchain=false
     ports:
@@ -107,5 +129,6 @@ services:
     depends_on:
       - orderer0
       - peer0
+      - couchdb1
 
 

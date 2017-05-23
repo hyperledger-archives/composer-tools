@@ -3,6 +3,8 @@ membersrvc:
   ports:
     - '7054:7054'
   command: membersrvc
+  environment:
+        - MEMBERSRVC_CA_ACA_ENABLED=true  
 vp0:
   image: hyperledger/fabric-peer
   ports:
