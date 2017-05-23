@@ -18,8 +18,8 @@ echo ${ME} `date`
 #fi
 
 #cd ${DIR} && pwd
-cd "${DIR}"
-
+cd "${DIR}"/fabric-dev-servers
+npm install
 npm run buildzip
 
 # now need to put the zip somewhere
