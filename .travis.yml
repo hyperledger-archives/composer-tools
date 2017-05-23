@@ -1,0 +1,25 @@
+language: node_js
+node_js:
+- '6'
+dist: trusty
+before_install: |
+    set -ev
+    set -o pipefail
+    npm install -g npm
+    npm install -g @alrra/travis-scripts
+
+script: ./.travis/script.sh
+after_failure: |
+    tail -n +1 -- /home/travis/.npm/_logs/*-debug.log
+sudo: required
+services:
+  - docker
+notifications:
+  webhooks:
+    urls:
+      - https://chat.hyperledger.org/hooks/BG3PeSerMSWRDSceE/GPCnCSqxMoyfqaTvLePSGudWjoCBwAcCT6bAKYRjK2sKSCM9
+    on_success: always # default: always
+    on_failure: always # default: always
+    on_start: always   # default: never
+    on_cancel: always # default: always
+    on_error: always # default: always
