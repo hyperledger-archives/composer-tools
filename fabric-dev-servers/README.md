@@ -23,7 +23,7 @@ $ unzip fabric-dev-servers.zip
 ```
 $ mkdir ~/fabric-tools && cd ~/fabric-tools
 $ curl -O https://raw.githubusercontent.com/hyperledger/composer-tools/master/fabric-dev-servers/fabric-dev-servers.tar.gz
-$ tar xzf fabric-dev-servers.zip
+$ tar xzf fabric-dev-servers.tar.gz
 ```
 
 2. Choose which version of Fabric to use. For v0.6 this needs to be set explicitly as follows.
