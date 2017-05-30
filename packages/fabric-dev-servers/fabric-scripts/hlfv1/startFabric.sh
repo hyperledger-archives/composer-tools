@@ -13,8 +13,9 @@ docker-compose -f "${DIR}"/hlfv1/hlfv1_alpha-docker-compose.yml down
 docker-compose -f "${DIR}"/hlfv1/hlfv1_alpha-docker-compose.yml up -d
 
 # wait for Hyperledger Fabric to start
-# incase of errors when running later commands, increase this value and restart
-sleep 15
+# incase of errors when running later commands, issue export FABRIC_START_TIMEOUT=<larger number>
+echo ${FABRIC_START_TIMEOUT}
+sleep ${FABRIC_START_TIMEOUT}
 
 node create-channel.js
 node join-channel.js
