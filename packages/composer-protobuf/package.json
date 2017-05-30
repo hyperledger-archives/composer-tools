@@ -1,8 +1,9 @@
 {
   "name": "composer-protobuf",
-  "version": "0.4.4",
+  "version": "1.0.1",
   "description": "Hyperledger Composer Protobuf support",
   "main": "index.js",
+  "private": true,
   "scripts": {
     "pretest": "npm run lint",
     "lint": "eslint .",
