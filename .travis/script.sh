@@ -20,7 +20,7 @@ echo ${ME} `date`
 #cd ${DIR} && pwd
 cd "${DIR}"/packages/fabric-dev-servers
 npm install
-npm run buildzip
+npm run build-archives
 
 # now need to put the zip somewhere
 
