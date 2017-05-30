@@ -1,0 +1,176 @@
+<!--
+  Copyright 2017 IBM Corp.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<script type="text/x-red" data-template-name="hyperledger-composer-out">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> <span data-i18n="node-red:common.label.name"></span></label>
+        <input type="text" id="node-input-name" data-i18n="[placeholder]node-red:common.label.name">
+    </div>
+     <select id="node-input-actionType">
+            <option value="create">Create</option>
+            <option value="update">Update</option>
+        </select>
+     <div class="form-row">
+        <label for="node-input-connectionProfile"><i class="fa fa-tag"></i>Connection Profile</label>
+        <input type="text" id="node-input-connectionProfile">
+    </div>
+    <div class="form-row">
+        <label for="node-input-businessNetworkIdentifier"><i class="fa fa-tag"></i>Business Network Identifier</label>
+        <input type="text" id="node-input-businessNetworkIdentifier">
+    </div>
+     <div class="form-row">
+        <label for="node-input-userID"><i class="fa fa-tag"></i>User ID</label>
+        <input type="text" id="node-input-userID">
+    </div>
+    <div class="form-row">
+        <label for="node-input-userSecret"><i class="fa fa-tag"></i>User Secret</label>
+        <input type="password" id="node-input-userSecret">
+    </div>
+</script>
+
+<script type="text/x-red" data-template-name="hyperledger-composer-mid">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> <span data-i18n="node-red:common.label.name"></span></label>
+        <input type="text" id="node-input-name" data-i18n="[placeholder]node-red:common.label.name">
+    </div>
+     <div class="form-row">
+        <label for="node-input-connectionProfile"><i class="fa fa-tag"></i> Connection Profile</label>
+        <input type="text" id="node-input-connectionProfile">
+    </div>
+    <div class="form-row">
+        <label for="node-input-businessNetworkIdentifier"><i class="fa fa-tag"></i> Business Network Identifier</label>
+        <input type="text" id="node-input-businessNetworkIdentifier">
+    </div>
+     <div class="form-row">
+        <label for="node-input-userID"><i class="fa fa-tag"></i>User ID</label>
+        <input type="text" id="node-input-userID">
+    </div>
+    <div class="form-row">
+        <label for="node-input-userSecret"><i class="fa fa-tag"></i>User Secret</label>
+        <input type="password" id="node-input-userSecret">
+    </div>
+</script>
+
+<script type="text/x-red" data-template-name="hyperledger-composer-in">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> <span data-i18n="node-red:common.label.name"></span></label>
+        <input type="text" id="node-input-name" data-i18n="[placeholder]node-red:common.label.name">
+    </div>
+     <div class="form-row">
+        <label for="node-input-connectionProfile"><i class="fa fa-tag"></i> Connection Profile</label>
+        <input type="text" id="node-input-connectionProfile">
+    </div>
+    <div class="form-row">
+        <label for="node-input-businessNetworkIdentifier"><i class="fa fa-tag"></i> Business Network Identifier</label>
+        <input type="text" id="node-input-businessNetworkIdentifier">
+    </div>
+     <div class="form-row">
+        <label for="node-input-userID"><i class="fa fa-tag"></i>User ID</label>
+        <input type="text" id="node-input-userID">
+    </div>
+    <div class="form-row">
+        <label for="node-input-userSecret"><i class="fa fa-tag"></i>User Secret</label>
+        <input type="password" id="node-input-userSecret">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="hyperledger-composer-out">
+  <p>Hyperledger-Composer node. Either create or update assets and participants or submit a transaction.</p>
+    <p>The data should be set in the <code>msg.payload</code><p>
+    <p>The name of the resource or transaction should be set in <code>msg.payload.$class</code></p>
+
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('hyperledger-composer-out', {
+        category: 'Hyperledger-Composer',
+        color: "#E6E0F8",
+        paletteLabel: "Hyperledger Composer",
+        defaults: {
+            name: {value: ""},
+            connectionProfile: {value: ""},
+            businessNetworkIdentifier: {value: ""},
+            userID: {value: ""},
+            userSecret: {value: ""},
+            actionType: {value: "create"}
+        },
+        inputs: 1,
+        outputs: 0,
+        icon: "CongaBlocks.png",
+        align: "right",
+        label: function () {
+            return this.name || "Hyperledger Composer";
+        }
+    });
+</script>
+
+<script type="text/x-red" data-help-name="hyperledger-composer-in">
+  <p>Hyperledger-Composer node. Subscribe to events emitted by a blockchain.
+
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('hyperledger-composer-in', {
+        category: 'Hyperledger-Composer',
+        color: "#E6E0F8",
+        paletteLabel: "Hyperledger Composer",
+        defaults: {
+            name: {value: ""},
+            connectionProfile: {value: ""},
+            businessNetworkIdentifier: {value: ""},
+            userID: {value: ""},
+            userSecret: {value: ""},
+            actionType: {value: "create"}
+        },
+        inputs: 0,
+        outputs: 1,
+        icon: "CongaBlocks.png",
+        align: "left",
+        label: function () {
+            return this.name || "Hyperledger Composer";
+        }
+    });
+</script>
+
+<script type="text/x-red" data-help-name="hyperledger-composer-mid">
+<p>Hyperledger-Composer node. Gets an asset, or participant using the <code>msg.payload</code>.</p>
+    <p>The name of the resource or transaction should be set in <code>msg.payload.$class</code></p>
+    <p>The id of the resource should be set in <code>msg.payload.id</code></p>
+
+
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('hyperledger-composer-mid', {
+        category: 'Hyperledger-Composer',
+        color: "#E6E0F8",
+        paletteLabel: "Hyperledger Composer",
+        defaults: {
+            name: {value: ""},
+            connectionProfile: {value: ""},
+            businessNetworkIdentifier: {value: ""},
+            userID: {value: ""},
+            userSecret: {value: ""}
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: "CongaBlocks.png",
+        label: function () {
+            return this.name || "Hyperledger Composer";
+        }
+    });
+</script>
+
