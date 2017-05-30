@@ -15,6 +15,7 @@
     "homedir": "^0.6.0"
   },
   "scripts": {
+    "postinstall" : "npm run build-archives",
     "build-archives": "gulp --gulpfile .travis/gulp.js"
   },
   "devDependencies": {
