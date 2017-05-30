@@ -9,11 +9,16 @@ echo "Running '${THIS_SCRIPT}'"
 
 if [ -z ${FABRIC_VERSION+x} ]; then
  echo "FABRIC_VERSION is unset, assuming hlfv1"
+<<<<<<< HEAD
  export FABRIC_VERSION="hlfv1"
+=======
+ FABRIC_VERSION="hlfv1"
+>>>>>>> f9fd6bb353185dad66f745d2d1e3ef507983a29a
 else
  echo "FABRIC_VERSION is set to '$FABRIC_VERSION'"
 fi
 
+<<<<<<< HEAD
 if [ -z ${FABRIC_START_TIMEOUT+x} ]; then
  echo "FABRIC_START_TIMEOUT is unset, assuming 15 (seconds)"
  export FABRIC_START_TIMEOUT=15
@@ -29,4 +34,6 @@ fi
 
 
 
+=======
+>>>>>>> f9fd6bb353185dad66f745d2d1e3ef507983a29a
 "${DIR}"/fabric-scripts/"${FABRIC_VERSION}"/"${THIS_SCRIPT}"
