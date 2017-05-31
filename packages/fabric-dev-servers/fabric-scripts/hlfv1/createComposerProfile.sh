@@ -14,7 +14,7 @@ cat << EOF > ~/.composer-connection-profiles/hlfv1/connection.json
     "orderers": [
        { "url" : "grpc://localhost:7050" }
     ],
-    "ca": "http://localhost:7054",
+    "ca": { url: "http://localhost:7054", name: "ca.example.com"},
     "peers": [
         {
             "requestURL": "grpc://localhost:7051",
@@ -28,8 +28,7 @@ cat << EOF > ~/.composer-connection-profiles/hlfv1/connection.json
     "keyValStore": "${HOME}/.hfc-key-store",
     "channel": "mychannel",
     "mspID": "Org1MSP",
-    "deployWaitTime": "300",
-    "invokeWaitTime": "100"
+    "timout": "300"
 }
 EOF
 echo "Hyperledger Composer profile has been created for the Hyperledger Fabric v1.0 instance"
