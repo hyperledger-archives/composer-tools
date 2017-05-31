@@ -7,10 +7,10 @@ set -ev
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 #
-cd "${DIR}"/hlfv1
+cd "${DIR}"/composer
 
-docker-compose -f "${DIR}"/hlfv1/hlfv1_alpha-docker-compose.yml down
-docker-compose -f "${DIR}"/hlfv1/hlfv1_alpha-docker-compose.yml up -d
+docker-compose -f "${DIR}"/composer/docker-compose.yml down
+docker-compose -f "${DIR}"/composer/docker-compose.yml up -d
 
 # wait for Hyperledger Fabric to start
 # incase of errors when running later commands, issue export FABRIC_START_TIMEOUT=<larger number>
