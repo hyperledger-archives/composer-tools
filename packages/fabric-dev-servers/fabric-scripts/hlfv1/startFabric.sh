@@ -3,7 +3,7 @@
 # Exit on first error, print all commands.
 set -ev
 
-# Grab the current directorydirectory.
+# Grab the current directory
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 #
@@ -24,6 +24,4 @@ sleep ${FABRIC_START_TIMEOUT}
 docker exec -e "CORE_PEER_LOCALMSPID=Org1MSP" -e "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/users/Admin@org1.example.com" peer0.org1.example.com peer channel create -o orderer.example.com:7050 -c mychannel -f /etc/hyperledger/configtx/mychannel.tx
 # Join peer0.org1.example.com to the channel.
 docker exec -e "CORE_PEER_LOCALMSPID=Org1MSP" -e "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/users/Admin@org1.example.com" peer0.org1.example.com peer channel join -b mychannel.block
-# copy the credentials
-cp creds/* ~/.hfc-key-store
 cd ../..
