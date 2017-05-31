@@ -7,10 +7,10 @@ set -ev
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 #
-cd "${DIR}"/hlfv1
+cd "${DIR}"/composer
 
-docker-compose -f "${DIR}"/hlfv1/hlfv1_alpha-docker-compose.yml down
-docker-compose -f "${DIR}"/hlfv1/hlfv1_alpha-docker-compose.yml up -d
+docker-compose -f "${DIR}"/composer/docker-compose.yml down
+docker-compose -f "${DIR}"/composer/docker-compose.yml up -d
 
 # wait for Hyperledger Fabric to start
 # incase of errors when running later commands, issue export FABRIC_START_TIMEOUT=<larger number>
@@ -29,7 +29,4 @@ docker exec peer1 peer channel fetch -o orderer0:7050 -c mychannel
 # Join peer1 to the channel.
 docker exec peer1 peer channel join -b mychannel.block
 
-
-#node create-channel.js
-#node join-channel.js
 cd ../..
