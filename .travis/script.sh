@@ -17,6 +17,8 @@ echo ${ME} `date`
 #  exit ${ABORT_CODE}
 #fi
 
+cd "${DIR}" && npm install
+
 #cd ${DIR} && pwd
 cd "${DIR}"/packages/fabric-dev-servers
 npm install
