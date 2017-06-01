@@ -47,7 +47,7 @@ if [ -z "${TRAVIS_TAG}" ]; then
 
     # Publish with unstable tag. These are development builds.
     echo "Pushing with tag unstable"
-    lerna exec --ignore '@(composer-systests|composer-website)' -- npm publish --tag=unstable 2>&1 | tee
+    lerna exec --ignore '@(composer-protobuf|fabric-dev-servers)' -- npm publish --tag=unstable 2>&1 | tee
 
     # Load the GitHub repository using the gh-pages branch.
     git clone -b gh-pages git@github.com:hyperledger/composer.git ${TODIR}
@@ -67,7 +67,7 @@ else
 
     # Publish with latest tag (default). These are release builds.
     echo "Pushing with tag latest"
-    lerna exec --ignore '@(composer-systests|composer-website)' -- npm publish 2>&1 | tee
+    lerna exec --ignore '@(composer-protobuf|fabric-dev-servers)' -- npm publish 2>&1 | tee
 
     # Configure the Git repository and clean any untracked and unignored build files.
     git config user.name "${GH_USER_NAME}"
