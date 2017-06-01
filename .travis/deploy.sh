@@ -26,17 +26,18 @@ npm config set registry https://registry.npmjs.org/
 npm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
 
 # Set the GitHub deploy key we will use to publish.
-set-up-ssh --key "$encrypted_6b8b8794d330_key" \
-           --iv "$encrypted_6b8b8794d330_iv" \
+set-up-ssh --key "$encrypted_c093d7331cc3_key" \
+           --iv "$encrypted_c093d7331cc3_iv" \
            --path-encrypted-key ".travis/github_deploy_key.enc"
 
 # Change from HTTPS to SSH.
 ./.travis/fix_github_https_repo.sh
 
+# Test the GitHub deploy key.
+git ls-remote
+
 # Set the target directory to load the GitHub repository.
 # export TODIR="${DIR}/packages/composer-website/out/gh-pages"
-
-
 
 # Push the code to npm.
 if [ -z "${TRAVIS_TAG}" ]; then
