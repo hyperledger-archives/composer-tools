@@ -34,7 +34,7 @@ set-up-ssh --key "$encrypted_6b8b8794d330_key" \
 ./.travis/fix_github_https_repo.sh
 
 # Set the target directory to load the GitHub repository.
-export TODIR="${DIR}/packages/composer-website/out/gh-pages"
+# export TODIR="${DIR}/packages/composer-website/out/gh-pages"
 
 
 
@@ -50,14 +50,14 @@ if [ -z "${TRAVIS_TAG}" ]; then
     lerna exec --ignore '@(composer-protobuf|fabric-dev-servers)' -- npm publish --tag=unstable 2>&1 | tee
 
     # Load the GitHub repository using the gh-pages branch.
-    git clone -b gh-pages git@github.com:hyperledger/composer.git ${TODIR}
+    # git clone -b gh-pages git@github.com:hyperledger/composer.git ${TODIR}
     # Move the built zip/tar.gz files for the tools to the website
-    cp ${DIR}/packages/fabric-dev-serves/fabric-dev-servers.* .
+    # cp ${DIR}/packages/fabric-dev-serves/fabric-dev-servers.* .
     # Add all the changes, commit, and push to the GitHub repository.
-    cd ${TODIR}
-    git add .
-    git commit -m "Automatic deployment of website"
-    git push origin gh-pages
+    # cd ${TODIR}
+    # git add .
+    # git commit -m "Automatic deployment of website"
+    # git push origin gh-pages
 
 
 else
