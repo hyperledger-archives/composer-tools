@@ -1,5 +1,5 @@
 {
-    "name": "node-red-contrib-hyperledger-composer",
+    "name": "node-red-contrib-composer",
     "version": "1.0.1",
     "description": "Hyperledger Composer nodes for node-red",
     "dependencies": {
