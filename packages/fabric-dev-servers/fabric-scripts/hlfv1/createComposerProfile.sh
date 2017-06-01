@@ -30,7 +30,7 @@ cat << EOF > ~/.composer-connection-profiles/hlfv1/connection.json
     "keyValStore": "${HOME}/.hfc-key-store",
     "channel": "mychannel",
     "mspID": "Org1MSP",
-    "timout": "300"
+    "timeout": "300"
 }
 EOF
 echo "Hyperledger Composer profile has been created for the Hyperledger Fabric v1.0 instance"

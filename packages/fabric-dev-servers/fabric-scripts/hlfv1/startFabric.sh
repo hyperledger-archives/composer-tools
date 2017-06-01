@@ -8,9 +8,6 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 #
 cd "${DIR}"/composer
-if [ ! -d ./hlfv1/crypto-config ]; then
-    tar -xvf crypto-config.tar.gz
-fi
 
 docker-compose -f "${DIR}"/composer/docker-compose.yml down
 docker-compose -f "${DIR}"/composer/docker-compose.yml up -d
