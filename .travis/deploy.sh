@@ -26,17 +26,18 @@ npm config set registry https://registry.npmjs.org/
 npm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
 
 # Set the GitHub deploy key we will use to publish.
-set-up-ssh --key "$encrypted_6b8b8794d330_key" \
-           --iv "$encrypted_6b8b8794d330_iv" \
+set-up-ssh --key "$encrypted_c093d7331cc3_key" \
+           --iv "$encrypted_c093d7331cc3_iv" \
            --path-encrypted-key ".travis/github_deploy_key.enc"
 
 # Change from HTTPS to SSH.
 ./.travis/fix_github_https_repo.sh
 
+# Test the GitHub deploy key.
+git ls-remote
+
 # Set the target directory to load the GitHub repository.
-export TODIR="${DIR}/packages/composer-website/out/gh-pages"
-
-
+# export TODIR="${DIR}/packages/composer-website/out/gh-pages"
 
 # Push the code to npm.
 if [ -z "${TRAVIS_TAG}" ]; then
@@ -50,14 +51,14 @@ if [ -z "${TRAVIS_TAG}" ]; then
     lerna exec --ignore '@(composer-protobuf|fabric-dev-servers)' -- npm publish --tag=unstable 2>&1 | tee
 
     # Load the GitHub repository using the gh-pages branch.
-    git clone -b gh-pages git@github.com:hyperledger/composer.git ${TODIR}
+    # git clone -b gh-pages git@github.com:hyperledger/composer.git ${TODIR}
     # Move the built zip/tar.gz files for the tools to the website
-    cp ${DIR}/packages/fabric-dev-serves/fabric-dev-servers.* .
+    # cp ${DIR}/packages/fabric-dev-serves/fabric-dev-servers.* .
     # Add all the changes, commit, and push to the GitHub repository.
-    cd ${TODIR}
-    git add .
-    git commit -m "Automatic deployment of website"
-    git push origin gh-pages
+    # cd ${TODIR}
+    # git add .
+    # git commit -m "Automatic deployment of website"
+    # git push origin gh-pages
 
 
 else
