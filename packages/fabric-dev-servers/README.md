@@ -121,12 +121,17 @@ $  # removes all the downloaded images
 $  docker rmi $(docker images -q) -f
 ```
 
-To assist there is a script within  fabric-dev-servers that assists with this.
+To assist there is a script within fabric-dev-servers `teardownAllDocker.sh` that assists with this. This has two options. Either kill and remove the running containers, or to kill and remove the running containers, but also to delete all the downloaded images.
+
 ```
-$ ./teardownAllDocker.sh
-Do you wish to remove ALL Docker containers (not just Hyperledger Fabric & Composer)?
-1) Yes
-2) No
-#? 1
-03437b2f7b98
+./teardownAllDocker.sh
+For all Docker containers or images (not just Hyperledger Fabric and Composer)
+1 - Kill and remove only the containers
+2 - Kill and remove the containers and remove all the downloaded images
+3 - Quit and not do anything
+
+1) Kill & Remove
+2) Remove Images
+3) Quit
+Please select which option >
 ```
