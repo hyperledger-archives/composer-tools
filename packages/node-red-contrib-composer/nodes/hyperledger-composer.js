@@ -92,8 +92,11 @@ module.exports = function (RED) {
             .then(() => {
                 node.log('subscribed');
                 businessNetworkConnection.on('event', listener = (event) => {
-                    node.log('received event', event);
-                    node.send(event);
+                    let serializer = businessNetworkDefinition.getSerializer();
+                    let deserializedEvent = serializer.toJSON(event);
+                    node.log('received event', JSON.stringify(deserializedEvent));
+                    node.send(deserializedEvent);
+
                 });
             });
     }
@@ -437,5 +440,3 @@ module.exports = function (RED) {
 
     RED.nodes.registerType('hyperledger-composer-in', HyperledgerComposerInNode);
 };
-
-
