@@ -1,29 +1,29 @@
 {
-    "name": "node-red-contrib-composer",
-    "version": "1.0.1",
-    "description": "Hyperledger Composer nodes for node-red",
-    "dependencies": {
-        "composer-client": "latest",
-        "composer-common": "latest"
-    },
-    "devDependencies": {
-        "eslint": "^3.5.0"
-    },
-    "license": "Apache-2.0",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/hyperledger/composer-tools"
-    },
-    "keywords": [
-        "node-red",
-        "blockchain",
-        "hyperledger",
-        "solutions"
-    ],
-    "node-red": {
-        "nodes": {
-            "hperledger-composer": "nodes/hyperledger-composer.js"
-        }
-    },
-    "author": "Hyperledger Composer"
+  "name": "node-red-contrib-composer",
+  "version": "0.0.3",
+  "description": "Hyperledger Composer nodes for node-red",
+  "dependencies": {
+    "composer-client": "latest",
+    "composer-common": "latest"
+  },
+  "devDependencies": {
+    "eslint": "^3.5.0"
+  },
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hyperledger/composer-tools"
+  },
+  "keywords": [
+    "node-red",
+    "blockchain",
+    "hyperledger",
+    "solutions"
+  ],
+  "node-red": {
+    "nodes": {
+      "hperledger-composer": "nodes/hyperledger-composer.js"
+    }
+  },
+  "author": "Hyperledger Composer"
 }
