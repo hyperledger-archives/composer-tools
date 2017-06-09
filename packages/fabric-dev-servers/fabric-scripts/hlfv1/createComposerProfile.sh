@@ -9,7 +9,7 @@ rm -rf ~/.composer-connection-profiles/hlfv1/*
 rm -rf ~/.hfc-key-store/*
 
 # copy peer admin credentials into the keyValStore
-mkdir -p ~/.hfc-key-keystore
+mkdir -p ~/.hfc-key-store
 cp "${DIR}"/composer/creds/* ~/.hfc-key-store
 
 # create a composer connection profile
