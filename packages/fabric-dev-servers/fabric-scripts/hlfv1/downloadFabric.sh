@@ -7,8 +7,8 @@ set -ev
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # Pull and tag the latest Hyperledger Fabric base image.
-docker pull hyperledger/fabric-peer:x86_64-1.0.0-alpha
-docker pull hyperledger/fabric-ca:x86_64-1.0.0-alpha
-docker pull hyperledger/fabric-ccenv:x86_64-1.0.0-alpha
-docker pull hyperledger/fabric-orderer:x86_64-1.0.0-alpha
-docker pull hyperledger/fabric-couchdb:x86_64-1.0.0-alpha
+docker pull hyperledger/fabric-peer:x86_64-1.0.0-beta
+docker pull hyperledger/fabric-ca:x86_64-1.0.0-beta
+docker pull hyperledger/fabric-ccenv:x86_64-1.0.0-beta
+docker pull hyperledger/fabric-orderer:x86_64-1.0.0-beta
+docker pull hyperledger/fabric-couchdb:x86_64-1.0.0-beta
