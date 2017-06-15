@@ -4,6 +4,9 @@ This repository contains a number of helper scripts to start up Hyperledger Fabr
 for development purposes. It can be very useful to have some scripts to quickly start up
 a Fabric instance to test applications against.
 
+This package is also available in side the `composer-data` directory that is created via the [local installer](https://hyperledger.github.io/composer/installing/using-playground-locally.html)
+
+
 # Usage
 
 ## Step 1: Getting Hyperledger Fabric running
@@ -13,13 +16,13 @@ These scripts use primarily bash and docker (for Hyperledger Fabric v1, it is pu
 1. In a directory of your choice (will assume `~/fabric-tools`) get the archive file that contains the tools.  There are both .zip and .tar.gz formats
 ```
 $ mkdir ~/fabric-tools && cd ~/fabric-tools
-$ curl -O https://raw.githubusercontent.com/hyperledger/composer-tools/master/fabric-dev-servers/fabric-dev-servers.zip
+$ curl -O https://raw.githubusercontent.com/hyperledger/composer-tools/master/packages/fabric-dev-servers/fabric-dev-servers.zip
 $ unzip fabric-dev-servers.zip
 ```
 
 ```
 $ mkdir ~/fabric-tools && cd ~/fabric-tools
-$ curl -O https://raw.githubusercontent.com/hyperledger/composer-tools/master/fabric-dev-servers/fabric-dev-servers.tar.gz
+$ curl -O https://raw.githubusercontent.com/hyperledger/composer-tools/master/packages/fabric-dev-servers/fabric-dev-servers.tar.gz
 $ tar xzf fabric-dev-servers.tar.gz
 ```
 
@@ -114,11 +117,14 @@ This diagram should to clarify the order in which the scripts can be run.  Remem
 It can sometimes be needed to delete all existing containers and images
 
 ```
-$  # removes all the currently running containers
-$  docker rm $(docker ps -a -q) -f
+$ # stop all running containers
+$ docker kill $(docker ps -q)
 
-$  # removes all the downloaded images
-$  docker rmi $(docker images -q) -f
+$ # removes all the current containers
+$ docker rm $(docker ps -a -q) -f
+
+$ # removes all the downloaded images
+$ docker rmi $(docker images -q) -f
 ```
 
 To assist there is a script within fabric-dev-servers `teardownAllDocker.sh` that assists with this. This has two options. Either kill and remove the running containers, or to kill and remove the running containers, but also to delete all the downloaded images.
