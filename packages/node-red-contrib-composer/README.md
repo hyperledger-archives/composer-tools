@@ -4,7 +4,7 @@ A set of nodes for interacting with Hyperledger Composer
 *Note : These node will only work if you are running node red locally. It won't work if you are using node red on bluemix.*
 
 ##Hyperledger-Composer-Out
-A node red output node that allows you to create or update assets or participants and submit transactions.
+A node red output node that allows you to create, update or delete assets or participants and submit transactions.
 
 ###Example Usage
 This example uses the Car Auction Sample Network that can be obtained from [here](https://github.com/hyperledger/composer-sample-networks/tree/master/packages/carauction-network)
@@ -16,7 +16,7 @@ In this example we will create a participant, the participant .
 
 2. Create a `hyperledger-composer-out node`
 
-3. Enter the `connection profile name`, `business network identifier`, `participant Id`, and `participant password` on the `hyperledger-composer-out node`.
+3. Enter the `connection profile name`, `business network identifier`, `user Id`, and `user secret` on the `hyperledger-composer-out node`.
 
 4. Use an inject node and set it to use `JSON` and enter the following JSON
 
@@ -34,7 +34,7 @@ This example follows on from the above example. It will retrieve the participant
  
  1. Create a `hyperledger-composer-mid node`
  
- 2. Enter the `connection profile name`, `business network identifier`, `participant Id`, and `participant password` on the `hyperledger-composer-mid node`.
+ 2. Enter the `connection profile name`, `business network identifier`, `user Id`, and `user secret` on the `hyperledger-composer-mid node`.
  
  3. Use an `inject node` and set it to use JSON and enter the following JSON
  
