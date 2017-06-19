@@ -38,7 +38,7 @@ module.exports = function (RED) {
      */
     function connectInternal (node) {
         node.log('connectInternal');
-        node.log('settings', connectionProfileName, businessNetworkIdentifier, userID, userSecret);
+        node.log('settings: connectionProfileName' + connectionProfileName + ' businessNetworkIdentifier ' + businessNetworkIdentifier + ' userID ' + userID + ' userSecret ' + userSecret);
         connecting = true;
         connected = false;
         connectionPromise = businessNetworkConnection
@@ -94,7 +94,7 @@ module.exports = function (RED) {
                 businessNetworkConnection.on('event', listener = (event) => {
                     let serializer = businessNetworkDefinition.getSerializer();
                     let deserializedEvent = serializer.toJSON(event);
-                    node.log('received event', JSON.stringify(deserializedEvent));
+                    node.log('received event ' + JSON.stringify(deserializedEvent));
                     node.send(deserializedEvent);
 
                 });
@@ -110,7 +110,7 @@ module.exports = function (RED) {
      * @returns {Promise} A promise
      */
     function create (data, node) {
-        node.log('create', data);
+        node.log('create ' + JSON.stringify(data));
 
         return ensureConnected(node)
             .then(() => {
@@ -121,7 +121,7 @@ module.exports = function (RED) {
                 // The create action is based on the type of the resource.
                 let classDeclaration = resource.getClassDeclaration();
                 if (classDeclaration instanceof AssetDeclaration) {
-                    node.log('creating asset', data);
+                    node.log('creating asset');
                     // For assets, we add the asset to its default asset registry
                     return businessNetworkConnection.getAssetRegistry(classDeclaration.getFullyQualifiedName())
                         .then((assetRegistry) => {
@@ -151,7 +151,7 @@ module.exports = function (RED) {
                     node.log('creating participant');
                     return businessNetworkConnection.getParticipantRegistry(classDeclaration.getFullyQualifiedName())
                         .then((participantRegistry) => {
-                            node.log('got registry', participantRegistry);
+                            node.log('got participant registry');
                             return participantRegistry.add(resource);
                         })
                         .then(() => {
@@ -179,7 +179,7 @@ module.exports = function (RED) {
      * @returns {Promise} A promise
      */
     function retrieve (data, node) {
-        node.log('retrieve');
+        node.log('retrieve ' + JSON.stringify(data));
 
         let modelName = data.$class;
         let id = data.id;
@@ -236,7 +236,7 @@ module.exports = function (RED) {
      * @returns {Promise} A promise
      */
     function update (data, node) {
-        node.log('update');
+        node.log('update ' + JSON.stringify(data));
 
         return ensureConnected(node)
             .then(() => {
@@ -251,6 +251,7 @@ module.exports = function (RED) {
                     // For assets, we add the asset to its default asset registry.
                     return businessNetworkConnection.getAssetRegistry(classDeclaration.getFullyQualifiedName())
                         .then((assetRegistry) => {
+                            node.log('Got asset registry');
                             return assetRegistry.update(resource);
                         })
                         .then(() => {
@@ -282,6 +283,74 @@ module.exports = function (RED) {
             .catch((error) => {
                 node.status({fill : 'red', shape : 'dot', text : 'Error updating resource'});
                 node.error('update: error thrown doing update ' + error.message);
+            });
+    }
+
+    /**
+     * Delete an instance of an object in Composer. For assets, this method
+     * deletes the asset to the default asset registry.
+     * @param {data} data The data to be updated on the blockchain
+     * @param {node} node The node red node currently being invoked
+     * @returns {Promise} A promise
+     */
+    function remove (data, node) {
+        node.log('delete ' + JSON.stringify(data));
+
+        let modelName = data.$class;
+        let id = data.id;
+
+        return ensureConnected(node)
+            .then(() => {
+                node.log('connected');
+                // The create action is based on the type of the resource.
+                let modelManager = businessNetworkDefinition.getModelManager();
+                let classDeclaration = modelManager.getType(modelName);
+                if (classDeclaration instanceof AssetDeclaration) {
+                    // For assets, we add the asset to its default asset registry.
+                    let assetRegistry;
+                    return businessNetworkConnection.getAssetRegistry(classDeclaration.getFullyQualifiedName())
+                        .then((_assetRegistry) => {
+                            assetRegistry = _assetRegistry;
+                            node.log('Got asset registry');
+                            return assetRegistry.get(id);
+                        })
+                        .then((resource) => {
+                            return assetRegistry.remove(resource);
+                        })
+                        .then(() => {
+                            node.log('removed');
+                            node.status({});
+                        })
+                        .catch((error) => {
+                            throw(error);
+                        });
+                } else if (classDeclaration instanceof ParticipantDeclaration) {
+                    // For participants, we add the participant to its default participant registry.
+                    let participantRegistry;
+                    return businessNetworkConnection.getParticipantRegistry(classDeclaration.getFullyQualifiedName())
+                        .then((_participantRegistry) => {
+                            participantRegistry = _participantRegistry;
+                            node.log('got participant registry');
+                            return participantRegistry.get(id);
+                        })
+                        .then((resource) => {
+                            return participantRegistry.remove(resource);
+                        })
+                        .then(() => {
+                            node.log('removed');
+                            node.status({});
+                        })
+                        .catch((error) => {
+                            throw(error);
+                        });
+                } else {
+                    // For everything else, we blow up!
+                    throw new Error(`Unable to handle resource of type: ${typeof classDeclaration}`);
+                }
+            })
+            .catch((error) => {
+                node.status({fill : 'red', shape : 'dot', text : 'Error deleting resource'});
+                node.error('delete: error thrown doing delete ' + error.message);
             });
     }
 
@@ -353,8 +422,12 @@ module.exports = function (RED) {
                 .then(() => {
                     if (config.actionType === 'create') {
                         return create(msg.payload, node);
-                    } else {
+                    } else if (config.actionType === 'update') {
                         return update(msg.payload, node);
+                    } else if (config.actionType === 'delete') {
+                        return remove(msg.payload, node);
+                    } else {
+                        return node.error('action type ' + config.actionType + ' is not valid');
                     }
                 })
                 .catch((error) => {
