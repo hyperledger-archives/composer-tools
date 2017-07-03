@@ -9,8 +9,8 @@ rm -rf ~/.composer-connection-profiles/hlfv1/*
 rm -rf ~/.hfc-key-store/*
 
 # copy org admin credentials into the keyValStore
-mkdir -p ~/.hfc-key-store
-cp "${DIR}"/composer/creds/* ~/.hfc-key-store
+mkdir -p ~/.composer-wallet
+cp "${DIR}"/composer/creds/* ~/.composer-wallet
 
 # create a composer connection profile
 mkdir -p ~/.composer-connection-profiles/hlfv1
