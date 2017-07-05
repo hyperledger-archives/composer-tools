@@ -6,7 +6,7 @@ set -ev
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 rm -rf ~/.composer-connection-profiles/hlfv1/*
-rm -rf ~/.hfc-key-store/*
+rm -rf ~/.composer-wallet/*
 
 # copy org admin credentials into the keyValStore
 mkdir -p ~/.composer-wallet
