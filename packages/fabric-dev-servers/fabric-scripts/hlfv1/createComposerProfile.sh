@@ -6,11 +6,11 @@ set -ev
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 rm -rf ~/.composer-connection-profiles/hlfv1/*
-rm -rf ~/.composer-wallet/*
+rm -rf ~/.composer-credentials/*
 
 # copy org admin credentials into the keyValStore
-mkdir -p ~/.composer-wallet
-cp "${DIR}"/composer/creds/* ~/.composer-wallet
+mkdir -p ~/.composer-credentials
+cp "${DIR}"/composer/creds/* ~/.composer-credentials
 
 # create a composer connection profile
 mkdir -p ~/.composer-connection-profiles/hlfv1
@@ -29,7 +29,7 @@ cat << EOF > ~/.composer-connection-profiles/hlfv1/connection.json
             "eventURL": "grpc://localhost:7053"
         }
     ],
-    "keyValStore": "${HOME}/.composer-wallet",
+    "keyValStore": "${HOME}/.composer-credentials",
     "channel": "composerchannel",
     "mspID": "Org1MSP",
     "timeout": "300"
