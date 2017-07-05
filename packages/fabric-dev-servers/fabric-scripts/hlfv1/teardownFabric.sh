@@ -12,7 +12,7 @@ docker-compose -f docker-compose.yml kill && docker-compose -f docker-compose.ym
 
 # remove the local state
 #rm -rf ~/.composer-connection-profiles/hlfv1
-#rm -f ~/.composer-wallet/*
+#rm -f ~/.composer-credentials/*
 
 # remove chaincode docker images
 # docker rmi $(docker images dev-* -q)
