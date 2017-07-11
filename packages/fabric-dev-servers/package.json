@@ -10,9 +10,6 @@
     "Solutions"
   ],
   "dependencies": {
-    "fabric-ca-client": "1.0.0-alpha.1",
-    "fabric-client": "1.0.0-alpha.1",
-    "homedir": "^0.6.0"
   },
   "scripts": {
     "build-archives": "gulp --gulpfile .travis/gulp.js"
