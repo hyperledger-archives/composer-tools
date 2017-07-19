@@ -3,8 +3,8 @@
   "version": "0.0.5",
   "description": "Hyperledger Composer nodes for node-red",
   "dependencies": {
-    "composer-client": "latest",
-    "composer-common": "latest"
+    "composer-client": "^0.10.0-0",
+    "composer-common": "^0.10.0-0"
   },
   "devDependencies": {
     "eslint": "^3.5.0"
