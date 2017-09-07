@@ -409,12 +409,13 @@ module.exports = function (RED) {
 
         node.on('input', function (msg) {
             node.log('checking config');
-            checkConfig(config)
+            this.composer = RED.nodes.getNode(config.composerProfile);
+            checkConfig(this.composer)
                 .then(() => {
-                    connectionProfileName = config.connectionProfile;
-                    businessNetworkIdentifier = config.businessNetworkIdentifier;
-                    userID = config.userID;
-                    userSecret = config.userSecret;
+                    connectionProfileName = this.composer.connectionProfile;
+                    businessNetworkIdentifier = this.composer.businessNetworkIdentifier;
+                    userID = this.composer.userID;
+                    userSecret = this.composer.userSecret;
 
                     node.log('checking payload');
                     return checkPayLoad(msg.payload, config.actionType);
@@ -450,12 +451,13 @@ module.exports = function (RED) {
 
         node.on('input', function (msg) {
             node.log('checking config');
-            checkConfig(config)
+            this.composer = RED.nodes.getNode(config.composerProfile);
+            checkConfig(this.composer)
                 .then(() => {
-                    connectionProfileName = config.connectionProfile;
-                    businessNetworkIdentifier = config.businessNetworkIdentifier;
-                    userID = config.userID;
-                    userSecret = config.userSecret;
+                    connectionProfileName = this.composer.connectionProfile;
+                    businessNetworkIdentifier = this.composer.businessNetworkIdentifier;
+                    userID = this.composer.userID;
+                    userSecret = this.composer.userSecret;
 
                     return checkPayLoad(msg.payload, RETRIEVE);
 
@@ -487,14 +489,14 @@ module.exports = function (RED) {
     function HyperledgerComposerInNode (config) {
         let node = this;
         RED.nodes.createNode(node, config);
-
+        this.composer = RED.nodes.getNode(config.composerProfile);
         node.log('checking config');
-        checkConfig(config)
+        checkConfig(this.composer)
             .then(() => {
-                connectionProfileName = config.connectionProfile;
-                businessNetworkIdentifier = config.businessNetworkIdentifier;
-                userID = config.userID;
-                userSecret = config.userSecret;
+                connectionProfileName = this.composer.connectionProfile;
+                businessNetworkIdentifier = this.composer.businessNetworkIdentifier;
+                userID = this.composer.userID;
+                userSecret = this.composer.userSecret;
 
                 return subscribeToEvents(node);
 

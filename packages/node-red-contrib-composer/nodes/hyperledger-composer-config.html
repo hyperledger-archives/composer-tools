@@ -1,0 +1,35 @@
+<script type="text/javascript">
+    RED.nodes.registerType('hyperledger-composer-config',{
+        category: 'config',
+        defaults: {
+            connectionProfile: {value:"hlfv1",required:true},
+            businessNetworkIdentifier: {value:"",required:true},
+            userID: {value:"",required:true},
+            userSecret: {value:"",required:true},
+
+        },
+        label: function() {
+            return this.connectionProfile+":"+this.businessNetworkIdentifier;
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="hyperledger-composer-config">
+    <div class="form-row">
+        <label for="node-config-input-connectionProfile"><i class="icon-bookmark"></i>Connection Profile</label>
+        <input type="text" id="node-config-input-connectionProfile">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-businessNetworkIdentifier"><i class="icon-bookmark"></i>Business Network Identifier</label>
+        <input type="text" id="node-config-input-businessNetworkIdentifier" placeholder="my-network">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-userID"><i class="icon-bookmark"></i>User ID</label>
+        <input type="text" id="node-config-input-userID" placeholder="admin">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-userSecret"><i class="icon-bookmark"></i>User Secret</label>
+        <input type="password" id="node-config-input-userSecret" placeholder="adminpw">
+    </div>
+    
+</script>
