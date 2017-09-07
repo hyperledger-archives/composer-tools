@@ -55,11 +55,11 @@ module.exports = function (RED) {
             .then(() => {
                 connected = true;
                 connecting = false;
-                node.status({fill : 'green', shape : 'dot', text : 'node-red:common.status.connected'});
+                node.status({fill : 'green', shape : 'dot', text : 'connected'});
             })
             .catch((error) => {
                 connected = connecting = false;
-                node.error(error);
+                throw error;
             });
         return connectionPromise;
     }
@@ -90,6 +90,7 @@ module.exports = function (RED) {
 
         return ensureConnected(node)
             .then(() => {
+                node.status({fill : 'green', shape : 'dot', text : 'connected'});
                 node.log('subscribed');
                 businessNetworkConnection.on('event', listener = (event) => {
                     let serializer = businessNetworkDefinition.getSerializer();
@@ -129,8 +130,7 @@ module.exports = function (RED) {
                             return assetRegistry.add(resource);
                         })
                         .then(() => {
-                            node.log('added resource');
-                            node.status({});
+                            node.log('added asset');
                         })
                         .catch((error) => {
                             node.error(error.message);
@@ -141,7 +141,7 @@ module.exports = function (RED) {
                     // For transactions, we submit the transaction for execution.
                     return businessNetworkConnection.submitTransaction(resource)
                         .then(() => {
-                            node.status({});
+                            node.log('submitted transaction successfully');
                         })
                         .catch((error) => {
                             node.error(error.message);
@@ -155,8 +155,7 @@ module.exports = function (RED) {
                             return participantRegistry.add(resource);
                         })
                         .then(() => {
-                            node.log('added');
-                            node.status({});
+                            node.log('added participant');
                         })
                         .catch((error) => {
                             node.error(error.message);
@@ -167,7 +166,7 @@ module.exports = function (RED) {
                 }
             })
             .catch((error) => {
-                node.error('create', 'error thrown doing create', error.message);
+                throw new Error('creating resource error ' + error.message);
             });
     }
 
@@ -178,7 +177,7 @@ module.exports = function (RED) {
      * @param {node} node The node red node currently being invoked
      * @returns {Promise} A promise
      */
-    function retrieve (data, node) {
+    function retrieve (data, resolve, node) {
         node.log('retrieve ' + JSON.stringify(data));
 
         let modelName = data.$class;
@@ -195,11 +194,20 @@ module.exports = function (RED) {
                     return businessNetworkConnection.getAssetRegistry(modelName)
                         .then((assetRegistry) => {
                             node.log('got asset registry');
-                            return assetRegistry.get(id);
+
+                            if (resolve) {
+                                return assetRegistry.resolve(id);
+                            } else {
+                                return assetRegistry.get(id);
+                            }
                         })
                         .then((result) => {
                             node.log('got asset');
-                            return serializer.toJSON(result);
+                            if(resolve) {
+                                return result;
+                            } else {
+                                return serializer.toJSON(result);
+                            }
                         })
                         .catch((error) => {
                             throw error;
@@ -224,7 +232,7 @@ module.exports = function (RED) {
                 }
             })
             .catch((error) => {
-                throw new Error('retrieve: error thrown doing retrieve ' + error.message);
+                throw new Error('retrieving resource error ' + error.message);
             });
     }
 
@@ -255,8 +263,7 @@ module.exports = function (RED) {
                             return assetRegistry.update(resource);
                         })
                         .then(() => {
-                            node.log('updated');
-                            node.status({});
+                            node.log('updated asset');
                         })
                         .catch((error) => {
                             throw(error);
@@ -269,8 +276,7 @@ module.exports = function (RED) {
                             return participantRegistry.update(resource);
                         })
                         .then(() => {
-                            node.log('updated');
-                            node.status({});
+                            node.log('updated participant');
                         })
                         .catch((error) => {
                             throw(error);
@@ -281,8 +287,7 @@ module.exports = function (RED) {
                 }
             })
             .catch((error) => {
-                node.status({fill : 'red', shape : 'dot', text : 'Error updating resource'});
-                node.error('update: error thrown doing update ' + error.message);
+                throw new Error('updating resource error ' + error.message);
             });
     }
 
@@ -318,8 +323,7 @@ module.exports = function (RED) {
                             return assetRegistry.remove(resource);
                         })
                         .then(() => {
-                            node.log('removed');
-                            node.status({});
+                            node.log('removed asset');
                         })
                         .catch((error) => {
                             throw(error);
@@ -337,8 +341,7 @@ module.exports = function (RED) {
                             return participantRegistry.remove(resource);
                         })
                         .then(() => {
-                            node.log('removed');
-                            node.status({});
+                            node.log('removed participant');
                         })
                         .catch((error) => {
                             throw(error);
@@ -349,8 +352,7 @@ module.exports = function (RED) {
                 }
             })
             .catch((error) => {
-                node.status({fill : 'red', shape : 'dot', text : 'Error deleting resource'});
-                node.error('delete: error thrown doing delete ' + error.message);
+                throw new Error('deleting resource error ' + error.message);
             });
     }
 
@@ -393,8 +395,6 @@ module.exports = function (RED) {
                     throw new Error('id not set in payload');
                 }
             }
-
-            return '';
         });
     }
 
@@ -428,13 +428,17 @@ module.exports = function (RED) {
                     } else if (config.actionType === 'delete') {
                         return remove(msg.payload, node);
                     } else {
-                        return node.error('action type ' + config.actionType + ' is not valid');
+                        throw new Error('Error: action type ' + config.actionType + ' is not valid');
                     }
                 })
                 .catch((error) => {
-                    node.status({fill : 'red', shape : 'dot', text : 'Error with inputs'});
-                    node.error(error.message);
+                    node.status({fill : 'red', shape : 'dot', text : 'Error'});
+                    node.error('Error: ' + error.message);
                 });
+
+            node.on('close', () => {
+                node.status({});
+            });
         });
     }
 
@@ -459,12 +463,21 @@ module.exports = function (RED) {
                     userID = this.composer.userID;
                     userSecret = this.composer.userSecret;
 
-                    return checkPayLoad(msg.payload, RETRIEVE);
+                    return checkPayLoad(msg.payload, config.actionType);
 
                 })
                 .then(() => {
-                    node.status('retrieving resource');
-                    return retrieve(msg.payload, node);
+                    if (config.actionType === 'create') {
+                        return create(msg.payload, node);
+                    } else if (config.actionType === 'update') {
+                        return update(msg.payload, node);
+                    } else if (config.actionType === 'delete') {
+                        return remove(msg.payload, node);
+                    } else if (config.actionType === 'retrieve') {
+                        return retrieve(msg.payload, config.resolve, node);
+                    } else {
+                        throw new Error('action type ' + config.actionType + ' is not valid');
+                    }
                 })
                 .then((result) => {
                     node.log('got a result');
@@ -474,8 +487,12 @@ module.exports = function (RED) {
                 })
                 .catch((error) => {
                     node.status({fill : 'red', shape : 'dot', text : 'Error'});
-                    node.error(error.message);
+                    node.error('Error: ' + error.message);
                 });
+
+            node.on('close', () => {
+                node.status({});
+            });
         });
     }
 
@@ -502,11 +519,13 @@ module.exports = function (RED) {
 
             })
             .catch((error) => {
-                node.status({fill : 'red', shape : 'dot', text : 'Error'});
-                node.error(error.message);
+                node.status({fill : 'red', shape : 'dot', text : 'error'});
+                node.log(error.message);
+                node.error('Error: ' + error.message);
             });
 
         node.on('close', () => {
+            node.status({fill : 'red', shape : 'ring', text : 'disconnected'});
             node.log('node was closed so removed event listener');
             businessNetworkConnection.removeListener('event', listener);
         });

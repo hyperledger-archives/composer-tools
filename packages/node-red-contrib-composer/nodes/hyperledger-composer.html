@@ -23,7 +23,7 @@
     <div class="form-row">
         <label for="node-input-composerProfile"><i class="fa fa-tag"></i>Composer Profile</label>
         <input type="select" id="node-input-composerProfile" placeholder="Composer"/>
-        
+
     </div>
     <div class="form-row">
         <label for="node-input-actionType"><i class="fa fa-tag"></i>Action Type</label>
@@ -32,7 +32,7 @@
             <option value="update">Update</option>
             <option value="delete">Delete</option>
         </select>
-    </div> 
+    </div>
 </script>
 
 <script type="text/x-red" data-template-name="hyperledger-composer-mid">
@@ -43,7 +43,20 @@
     <div class="form-row">
         <label for="node-input-composerProfile"><i class="fa fa-tag"></i>Composer Profile</label>
         <input type="select" id="node-input-composerProfile" placeholder="Composer"/>
-        
+    </div>
+    <div class="form-row">
+        <label for="node-input-connectionProfile"><i class="fa fa-tag"></i> Action</label>
+        <select id="node-input-actionType">
+                <option value="create">Create</option>
+                <option value="retrieve">Retrieve</option>
+                <option value="update">Update</option>
+                <option value="delete">Delete</option>
+        </select>
+    </div>
+    <div id="node-input-resolve-outer" class="form-row" style="display: none;">
+        <label for="node-input-resolve"><i class="fa fa-tag"></i> Resolve Relationships</label>
+        <input type="checkbox" id="node-input-resolve" style="display:inline-block; width:auto; vertical-align:middle; margin:0" >
+        <span class="vertical-align:middle;"> Resolve</span
     </div>
 </script>
 
@@ -55,15 +68,14 @@
     <div class="form-row">
         <label for="node-input-composerProfile"><i class="fa fa-tag"></i>Composer Profile</label>
         <input type="select" id="node-input-composerProfile" placeholder="Composer"/>
-        
-    </div>    
+
+    </div>
 </script>
 
 <script type="text/x-red" data-help-name="hyperledger-composer-out">
   <p>Hyperledger-Composer node. Either create or update assets and participants or submit a transaction.</p>
     <p>The data should be set in the <code>msg.payload</code><p>
     <p>The name of the resource or transaction should be set in <code>msg.payload.$class</code></p>
-
 </script>
 
 <script type="text/javascript">
@@ -77,11 +89,11 @@
             actionType: {value: "create"}
 
         },
-        inputs: 1,
-        outputs: 0,
-        icon: "CongaBlocks.png",
-        align: "right",
-        label: function () {
+        inputs : 1,
+        outputs : 0,
+        icon : "CongaBlocks.png",
+        align : "right",
+        label : function () {
             return this.name || "Hyperledger Composer";
         }
     });
@@ -89,7 +101,6 @@
 
 <script type="text/x-red" data-help-name="hyperledger-composer-in">
   <p>Hyperledger-Composer node. Subscribe to events emitted by a blockchain.
-
 </script>
 
 <script type="text/javascript">
@@ -102,11 +113,11 @@
             composerProfile: {value:"", type:"hyperledger-composer-config"},
             actionType: {value: "create"}
         },
-        inputs: 0,
-        outputs: 1,
-        icon: "CongaBlocks.png",
-        align: "left",
-        label: function () {
+        inputs : 0,
+        outputs : 1,
+        icon : "CongaBlocks.png",
+        align : "left",
+        label : function () {
             return this.name || "Hyperledger Composer";
         }
     });
@@ -116,8 +127,6 @@
 <p>Hyperledger-Composer node. Gets an asset, or participant using the <code>msg.payload</code>.</p>
     <p>The name of the resource or transaction should be set in <code>msg.payload.$class</code></p>
     <p>The id of the resource should be set in <code>msg.payload.id</code></p>
-
-
 </script>
 
 <script type="text/javascript">
@@ -128,12 +137,24 @@
         defaults: {
             name: {value: ""},
             composerProfile: {value:"", type:"hyperledger-composer-config"},
+            actionType : {value : "create"},
+            resolve: {value:false},
         },
-        inputs: 1,
-        outputs: 1,
-        icon: "CongaBlocks.png",
-        label: function () {
+        inputs : 1,
+        outputs : 1,
+        icon : "CongaBlocks.png",
+        label : function () {
             return this.name || "Hyperledger Composer";
+        },
+        oneditprepare : function () {
+            $("#node-input-actionType").change(function (e) {
+                var type = $(this).val();
+                if (type === "retrieve") {
+                    $("#node-input-resolve-outer").show();
+                } else {
+                    $("#node-input-resolve-outer").hide();
+                }
+            });
         }
     });
 </script>

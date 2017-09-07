@@ -27,7 +27,7 @@ In this example we will create a participant, the participant .
 5. Using the playground or command line you should now be able to see the participant that has been created.
 
 ##Hyperledger-Composer-Mid
-A node red mid flow node that allows you to get assets or participants from a registry.
+A node red mid flow node that allows you to create, retrieve, update, or delete assets and participants from a registry.
 
 ###Example Usage
 This example follows on from the above example. It will retrieve the participant that was created above.
