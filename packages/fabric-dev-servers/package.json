@@ -1,6 +1,6 @@
 {
   "name": "fabric-dev-servers",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Helper Scripts to start Hyperledger Fabric v1.0 for development/test purposes",
   "private": true,
   "repository": {
