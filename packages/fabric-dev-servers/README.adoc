@@ -1,13 +1,14 @@
-# fabric-dev-servers
+
+## fabric-dev-servers
 
 This repository contains a number of helper scripts to start up a Hyperledger Fabric v1.0
 network for development purposes. You can use the Hyperledger Fabric network created by these scripts to quickly deploy Blockchain business networks built using Hyperledger Composer, and test applications that depend on a running network.
 
 This package is also available inside the `composer-data` directory that is created via the [local installer] for Hyperledger Composer: [Installing and running Hyperledger Composer Playground locally](https://hyperledger.github.io/composer/installing/using-playground-locally.html)
 
-# Usage
+.Usage
 
-## Step 1: Getting Hyperledger Fabric running
+### Getting Hyperledger Fabric running
 
 These scripts use bash and Docker. You must ensure that both bash and Docker are installed on the target system before running these scripts.
 
@@ -44,9 +45,9 @@ $ ./stopFabric.sh
 $ ./teardownFabric.sh
 ```
 
-## Script details
+### Script details
 
-### Downloading Hyperledger Fabric
+#### Downloading Hyperledger Fabric
 
 Issue from the `fabric-tools` directory:
 
@@ -54,7 +55,7 @@ Issue from the `fabric-tools` directory:
 $ ./downloadFabric.sh
 ```
 
-### Starting Hyperledger Fabric
+#### Starting Hyperledger Fabric
 
 Issue from the `fabric-tools` directory:
 
@@ -68,7 +69,7 @@ By default, this script will pause for 15 seconds to let Hyperledger Fabric star
 $ export FABRIC_START_TIMEOUT=30
 ```
 
-### Stop Hyperledger Fabric
+#### Stop Hyperledger Fabric
 
 Issue from the `fabric-tools` directory:
 
@@ -76,7 +77,7 @@ Issue from the `fabric-tools` directory:
 $ ./stop.sh
 ```
 
-### Create Hyperledger Composer Profile
+#### Create Hyperledger Composer Profile
 
 Issue from the `fabric-tools` directory:
 
@@ -86,7 +87,7 @@ $ ./createComposerProfile.sh
 
 Note: this create a Hyperledger Composer profile specifically to connect to the Hyperledger Fabric network that you have already started.
 
-### Teardown Hyperledger Fabric
+#### Teardown Hyperledger Fabric
 
 Issue from the `fabric-tools` directory:
 
@@ -94,13 +95,13 @@ Issue from the `fabric-tools` directory:
 $ ./teardownFabric.sh
 ```
 
-### Command Ordering
+#### Command Ordering
 
 This diagram should to clarify the order in which the scripts can be run:
 
 ![](CmdOrder.png).
 
-# Additional commands
+.Additional commands
 
 It can sometimes be needed to delete all existing containers and images
 
