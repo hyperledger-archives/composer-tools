@@ -24,7 +24,7 @@ fi
 cat "${DIR}"/composer/creds/PeerAdmin | jq -r .enrollment.identity.certificate > /tmp/.PeerAdmin.cert 
 cat << EOF > /tmp/.connection.json
 {
-    "name": "hlfv1-dev",
+    "name": "hlfv1",
     "type": "hlfv1",
     "orderers": [
        { "url" : "grpc://localhost:7050" }
@@ -37,13 +37,13 @@ cat << EOF > /tmp/.connection.json
         }
     ],
     "keyValStore": "${HOME}/.hfc-key-store",
-    "channel": "mychannel",
+    "channel": "composerchannel",
     "mspID": "Org1MSP",
     "timeout": "300"
 }
 EOF
 
-PRIVATE_KEY="${DIR}"/composer/creds/9022d671ceedbb24af3ea69b5a8136cc64203df6b9920e26f48123fcfcb1d2e9-priv
+PRIVATE_KEY="${DIR}"/composer/creds/114aab0e76bf0c78308f89efc4b8c9423e31568da0c340ca187a9b17aa9a4457-priv
 
 composer card create -j /tmp/.connection.json -u PeerAdmin -c /tmp/.PeerAdmin.cert -k "${PRIVATE_KEY}" -r PeerAdmin --file /tmp/PeerAdmin@hlfv1.card 
 composer card import --file /tmp/PeerAdmin@hlfv1.card 
