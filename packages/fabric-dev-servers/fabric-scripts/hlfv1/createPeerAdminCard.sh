@@ -35,6 +35,7 @@ cat << EOF > /tmp/.connection.json
             "eventURL": "grpc://localhost:7053"
         }
     ],
+    "keyValStore": "${HOME}/.composer-credentials",
     "channel": "composerchannel",
     "mspID": "Org1MSP",
     "timeout": 300
