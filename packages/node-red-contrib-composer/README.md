@@ -16,7 +16,7 @@ In this example we will create a participant, the participant .
 
 2. Create a `hyperledger-composer-out node`
 
-3. Enter the `connection profile name`, `business network identifier`, `user Id`, and `user secret` on the `hyperledger-composer-out node`.
+3. On `Composer Card` click the pencil top add a new config node. Specify the `card name`, or use the drop down to use one previous created.
 
 4. Use an inject node and set it to use `JSON` and enter the following JSON
 
@@ -33,8 +33,8 @@ A node red mid flow node that allows you to create, retrieve, update, or delete 
 This example follows on from the above example. It will retrieve the participant that was created above.
  
  1. Create a `hyperledger-composer-mid node`
- 
- 2. Enter the `connection profile name`, `business network identifier`, `user Id`, and `user secret` on the `hyperledger-composer-mid node`.
+
+ 2. On `Composer Card` click the pencil top add a new config node. Specify the `card name`, or use the drop down to use one previous created.
  
  3. Use an `inject node` and set it to use JSON and enter the following JSON
  
@@ -46,3 +46,5 @@ This example follows on from the above example. It will retrieve the participant
 
 ##Hyperledger-Composer-In
 A node red input node that subscribes to events from a blockchain
+
+1. On `Composer Card` click the pencil top add a new config node. Specify the `card name`, or use the drop down to use one previous created.

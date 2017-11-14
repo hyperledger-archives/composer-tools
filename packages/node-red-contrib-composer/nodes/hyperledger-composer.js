@@ -24,7 +24,7 @@ module.exports = function (RED) {
     let connectionPromise;
     let businessNetworkConnection = new BusinessNetworkConnection();
 
-    let connectionProfileName, businessNetworkIdentifier, userID, userSecret;
+    let cardName;
     let businessNetworkDefinition, serializer;
 
     let listener;
@@ -38,15 +38,11 @@ module.exports = function (RED) {
      */
     function connectInternal (node) {
         node.log('connectInternal');
-        node.log('settings: connectionProfileName' + connectionProfileName + ' businessNetworkIdentifier ' + businessNetworkIdentifier + ' userID ' + userID + ' userSecret ' + userSecret);
+        node.log('settings: cardName' + cardName);
         connecting = true;
         connected = false;
         connectionPromise = businessNetworkConnection
-            .connect(connectionProfileName,
-                businessNetworkIdentifier,
-                userID,
-                userSecret
-            )
+            .connect(cardName)
             .then((result) => {
                 // setup some objects for this business network
                 businessNetworkDefinition = result;
@@ -203,7 +199,7 @@ module.exports = function (RED) {
                         })
                         .then((result) => {
                             node.log('got asset');
-                            if(resolve) {
+                            if (resolve) {
                                 return result;
                             } else {
                                 return serializer.toJSON(result);
@@ -364,14 +360,8 @@ module.exports = function (RED) {
     function checkConfig (config) {
         return Promise.resolve().then(() => {
 
-            if (!config.connectionProfile) {
-                throw new Error('connection profile must be set');
-            } else if (!config.businessNetworkIdentifier) {
-                throw new Error('business network identifier must be set');
-            } else if (!config.userID) {
-                throw new Error('user ID must be set');
-            } else if (!config.userSecret) {
-                throw new Error('user secret must be set');
+            if (!config.cardName) {
+                throw new Error('card name must be set');
             }
 
             return '';
@@ -408,14 +398,12 @@ module.exports = function (RED) {
         RED.nodes.createNode(node, config);
 
         node.on('input', function (msg) {
-            node.log('checking config');
-            this.composer = RED.nodes.getNode(config.composerProfile);
+            node.log('config ' + config.composerCard);
+            this.composer = RED.nodes.getNode(config.composerCard);
+            node.log('checking config' + this.composer);
             checkConfig(this.composer)
                 .then(() => {
-                    connectionProfileName = this.composer.connectionProfile;
-                    businessNetworkIdentifier = this.composer.businessNetworkIdentifier;
-                    userID = this.composer.userID;
-                    userSecret = this.composer.userSecret;
+                    cardName = this.composer.cardName;
 
                     node.log('checking payload');
                     return checkPayLoad(msg.payload, config.actionType);
@@ -455,13 +443,10 @@ module.exports = function (RED) {
 
         node.on('input', function (msg) {
             node.log('checking config');
-            this.composer = RED.nodes.getNode(config.composerProfile);
+            this.composer = RED.nodes.getNode(config.composerCard);
             checkConfig(this.composer)
                 .then(() => {
-                    connectionProfileName = this.composer.connectionProfile;
-                    businessNetworkIdentifier = this.composer.businessNetworkIdentifier;
-                    userID = this.composer.userID;
-                    userSecret = this.composer.userSecret;
+                    cardName = this.composer.cardName;
 
                     return checkPayLoad(msg.payload, config.actionType);
 
@@ -506,14 +491,11 @@ module.exports = function (RED) {
     function HyperledgerComposerInNode (config) {
         let node = this;
         RED.nodes.createNode(node, config);
-        this.composer = RED.nodes.getNode(config.composerProfile);
+        this.composer = RED.nodes.getNode(config.composerCard);
         node.log('checking config');
         checkConfig(this.composer)
             .then(() => {
-                connectionProfileName = this.composer.connectionProfile;
-                businessNetworkIdentifier = this.composer.businessNetworkIdentifier;
-                userID = this.composer.userID;
-                userSecret = this.composer.userSecret;
+                cardName = this.composer.cardName;
 
                 return subscribeToEvents(node);
 

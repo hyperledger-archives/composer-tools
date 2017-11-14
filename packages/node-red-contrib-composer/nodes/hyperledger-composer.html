@@ -21,8 +21,8 @@
     </div>
 
     <div class="form-row">
-        <label for="node-input-composerProfile"><i class="fa fa-tag"></i>Composer Profile</label>
-        <input type="select" id="node-input-composerProfile" placeholder="Composer"/>
+        <label for="node-input-composerCard"><i class="fa fa-tag"></i>Composer Card</label>
+        <input type="select" id="node-input-composerCard" placeholder="Composer"/>
 
     </div>
     <div class="form-row">
@@ -41,11 +41,11 @@
         <input type="text" id="node-input-name" data-i18n="[placeholder]node-red:common.label.name">
     </div>
     <div class="form-row">
-        <label for="node-input-composerProfile"><i class="fa fa-tag"></i>Composer Profile</label>
-        <input type="select" id="node-input-composerProfile" placeholder="Composer"/>
+        <label for="node-input-composerCard"><i class="fa fa-tag"></i>Composer PCard</label>
+        <input type="select" id="node-input-composerCard" placeholder="Composer"/>
     </div>
     <div class="form-row">
-        <label for="node-input-connectionProfile"><i class="fa fa-tag"></i> Action</label>
+        <label for="node-input-actionType"><i class="fa fa-tag"></i> Action</label>
         <select id="node-input-actionType">
                 <option value="create">Create</option>
                 <option value="retrieve">Retrieve</option>
@@ -66,8 +66,8 @@
         <input type="text" id="node-input-name" data-i18n="[placeholder]node-red:common.label.name">
     </div>
     <div class="form-row">
-        <label for="node-input-composerProfile"><i class="fa fa-tag"></i>Composer Profile</label>
-        <input type="select" id="node-input-composerProfile" placeholder="Composer"/>
+        <label for="node-input-composerCard"><i class="fa fa-tag"></i>Composer Card</label>
+        <input type="select" id="node-input-composerCard" placeholder="Composer"/>
 
     </div>
 </script>
@@ -85,7 +85,7 @@
         paletteLabel: "Hyperledger Composer",
         defaults: {
             name: {value: ""},
-            composerProfile: {value:"", type:"hyperledger-composer-config"},
+            composerCard: {value:"", type:"hyperledger-composer-config"},
             actionType: {value: "create"}
 
         },
@@ -110,7 +110,7 @@
         paletteLabel: "Hyperledger Composer",
         defaults: {
             name: {value: ""},
-            composerProfile: {value:"", type:"hyperledger-composer-config"},
+            composerCard: {value:"", type:"hyperledger-composer-config"},
             actionType: {value: "create"}
         },
         inputs : 0,
@@ -136,7 +136,7 @@
         paletteLabel: "Hyperledger Composer",
         defaults: {
             name: {value: ""},
-            composerProfile: {value:"", type:"hyperledger-composer-config"},
+            composerCard: {value:"", type:"hyperledger-composer-config"},
             actionType : {value : "create"},
             resolve: {value:false},
         },
