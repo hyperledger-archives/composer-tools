@@ -394,12 +394,6 @@ module.exports = function (RED) {
             if (!payLoad.$class) {
                 throw new Error('$class not set in payload');
             }
-
-            if (type === RETRIEVE) {
-                if (!payLoad.id) {
-                    throw new Error('id not set in payload');
-                }
-            }
         });
     }
 
