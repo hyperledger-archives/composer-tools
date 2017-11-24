@@ -192,9 +192,19 @@ module.exports = function (RED) {
                             node.log('got asset registry');
 
                             if (resolve) {
-                                return assetRegistry.resolve(id);
+                                if (id == null) {
+                                  return assetRegistry.resolveAll();
+                                }
+                                else {
+                                  return assetRegistry.resolve(id);
+                                }
                             } else {
+                              if (id == null) {
+                                return assetRegistry.getAll();
+                              }
+                              else {
                                 return assetRegistry.get(id);
+                              }
                             }
                         })
                         .then((result) => {
@@ -213,7 +223,12 @@ module.exports = function (RED) {
                     return businessNetworkConnection.getParticipantRegistry(modelName)
                         .then((participantRegistry) => {
                             node.log('got participant registry');
-                            return participantRegistry.get(id);
+                            if (id == null) {
+                                return assetRegistry.resolveAll();
+                            }
+                            else {
+                              return participantRegistry.get(id);
+                            }
                         })
                         .then((result) => {
                             node.log('got participant');
