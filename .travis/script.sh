@@ -58,5 +58,10 @@ unzip fabric-dev-servers.zip
 ./stopFabric.sh
 ./teardownFabric.sh
 
+export FABRIC_VERSION="hlfv11"
+./downloadFabric.sh
+./startFabric.sh
+./stopFabric.sh
+./teardownFabric.sh
 
 exit 0

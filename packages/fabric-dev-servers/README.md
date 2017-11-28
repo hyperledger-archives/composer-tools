@@ -25,7 +25,7 @@ $ curl -O https://raw.githubusercontent.com/hyperledger/composer-tools/master/pa
 $ tar xzf fabric-dev-servers.tar.gz
 ```
 
-2. If this is the first time that you have run these scripts, you'll need to download Hyperledger Fabric first. If you have already downloaded Hyperledger Fabric, then first start Hyperledger Fabric, and then create a Hyperledger Composer profile. After that you can then choose to stop Hyperledger Fabric, and start it again later. Alternatively, to completely clean up, you can teardown Hyperledger Fabric and remove the Hyperledger Composer profile.
+2. If this is the first time that you have run these scripts, you'll need to download Hyperledger Fabric first. If you have already downloaded Hyperledger Fabric, then first start Hyperledger Fabric, and then create a Hyperledger Composer PeerAdmin card. After that you can then choose to stop Hyperledger Fabric, and start it again later. Alternatively, to completely clean up, you can teardown Hyperledger Fabric.
 
 All the scripts will be available in the directory `~/fabric-tools`. A typical sequence of commands for using these scripts with Hyperledger Composer would be:
 
@@ -33,7 +33,7 @@ All the scripts will be available in the directory `~/fabric-tools`. A typical s
 $ cd ~/fabric-tools
 $ ./downloadFabric.sh
 $ ./startFabric.sh
-$ ./createComposerProfile.sh
+$ ./createPeerAdminCard.sh
 ```
 
 Then at the end of your development session:
@@ -76,15 +76,16 @@ Issue from the `fabric-tools` directory:
 $ ./stop.sh
 ```
 
-### Create Hyperledger Composer Profile
+### Create Hyperledger Composer PeerAdmin card
 
 Issue from the `fabric-tools` directory:
 
 ```
-$ ./createComposerProfile.sh
+$ ./createPeerAdminCard.sh
 ```
 
-Note: this create a Hyperledger Composer profile specifically to connect to the Hyperledger Fabric network that you have already started.
+Note: this will create a Hyperledger Composer card specifically for the use of deploying a business network either
+by using deploy or via install/start.
 
 ### Teardown Hyperledger Fabric
 
