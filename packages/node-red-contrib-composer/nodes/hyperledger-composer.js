@@ -224,7 +224,7 @@ module.exports = function (RED) {
                         .then((participantRegistry) => {
                             node.log('got participant registry');
                             if (id == null) {
-                                return assetRegistry.resolveAll();
+                                return assetRegistry.getAll();
                             }
                             else {
                               return participantRegistry.get(id);
