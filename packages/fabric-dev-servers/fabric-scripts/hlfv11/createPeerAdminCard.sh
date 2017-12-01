@@ -1,12 +1,50 @@
 #!/bin/bash
-
 # Exit on first error
 set -e
+
+Usage() {
+	echo ""
+	echo "Usage: ./createPeerAdminCard.sh [-h host] [-n]"
+	echo ""
+	echo "Options:"
+	echo -e "\t-h or --host:\t\t(Optional) name of the host to specify in the connection profile"
+	echo -e "\t-n or --noimport:\t(Optional) don't import into card store"
+	echo ""
+	echo "Example: ./createPeerAdminCard.sh"
+	echo ""
+	exit 1
+}
+
+Parse_Arguments() {
+	while [ $# -gt 0 ]; do
+		case $1 in
+			--help)
+				HELPINFO=true
+				;;
+			--host | -h)
+                shift
+				HOST="$1"
+				;;
+            --noimport | -n)
+				NOIMPORT=true
+				;;
+		esac
+		shift
+	done
+}
+
+HOST=localhost
+Parse_Arguments $@
+
+if [ "${HELPINFO}" == "true" ]; then
+    Usage
+fi
+
 # Grab the current directory
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 echo
-# check that the composer command exists at a version >v0.14
+# check that the composer command exists at a version >v0.15
 if hash composer 2>/dev/null; then
     composer --version | awk -F. '{if ($2<16) exit 1}'
     if [ $? -eq 1 ]; then
@@ -19,20 +57,19 @@ else
     echo 'Need to have composer-cli installed at v0.16 or greater'
     exit 1
 fi
-# need to get the certificate 
 
 cat << EOF > /tmp/.connection.json
 {
     "name": "hlfv1",
     "type": "hlfv1",
     "orderers": [
-       { "url" : "grpc://localhost:7050" }
+       { "url" : "grpc://${HOST}:7050" }
     ],
-    "ca": { "url": "http://localhost:7054", "name": "ca.org1.example.com"},
+    "ca": { "url": "http://${HOST}:7054", "name": "ca.org1.example.com"},
     "peers": [
         {
-            "requestURL": "grpc://localhost:7051",
-            "eventURL": "grpc://localhost:7053"
+            "requestURL": "grpc://${HOST}:7051",
+            "eventURL": "grpc://${HOST}:7053"
         }
     ],
     "channel": "composerchannel",
@@ -47,11 +84,24 @@ CERT="${DIR}"/composer/crypto-config/peerOrganizations/org1.example.com/users/Ad
 if composer card list -n PeerAdmin@hlfv1 > /dev/null; then
     composer card delete -n PeerAdmin@hlfv1
 fi
-composer card create -p /tmp/.connection.json -u PeerAdmin -c "${CERT}" -k "${PRIVATE_KEY}" -r PeerAdmin -r ChannelAdmin --file /tmp/PeerAdmin@hlfv1.card
-composer card import --file /tmp/PeerAdmin@hlfv1.card 
+
+if [ "${NOIMPORT}" != "true" ]; then
+    CARDOUTPUT=/tmp/PeerAdmin@hlfv1.card
+else
+    CARDOUTPUT=PeerAdmin@hlfv1.card
+fi
+
+composer card create -p /tmp/.connection.json -u PeerAdmin -c "${CERT}" -k "${PRIVATE_KEY}" -r PeerAdmin -r ChannelAdmin --file $CARDOUTPUT
+
+if [ "${NOIMPORT}" != "true" ]; then
+    composer card import --file /tmp/PeerAdmin@hlfv1.card 
+    composer card list
+    echo "Hyperledger Composer PeerAdmin card has been imported, host of fabric specified as '${HOST}'"
+    rm /tmp/PeerAdmin@hlfv1.card
+else
+    echo "Hyperledger Composer PeerAdmin card has been created, host of fabric specified as '${HOST}'"
+fi
 
 rm -rf /tmp/.connection.json
 
-echo "Hyperledger Composer PeerAdmin card has been imported"
-composer card list
 
