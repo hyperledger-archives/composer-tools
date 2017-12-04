@@ -223,11 +223,20 @@ module.exports = function (RED) {
                     return businessNetworkConnection.getParticipantRegistry(modelName)
                         .then((participantRegistry) => {
                             node.log('got participant registry');
-                            if (id == null) {
-                                return assetRegistry.getAll();
-                            }
-                            else {
-                              return participantRegistry.get(id);
+                            if (resolve) {
+                              if (id == null) {
+                                return participantRegistry.resolveAll();
+                              }
+                              else {
+                                return participantRegistry.resolve(id);
+                              }
+                            } else {
+                              if (id == null) {
+                                return participantRegistry.getAll();
+                              }
+                              else {
+                                return participantRegistry.get(id);
+                              }
                             }
                         })
                         .then((result) => {
