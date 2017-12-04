@@ -5,6 +5,16 @@ network for development purposes. You can use the Hyperledger Fabric network cre
 
 This package is also available inside the `composer-data` directory that is created via the [local installer] for Hyperledger Composer: [Installing and running Hyperledger Composer Playground locally](https://hyperledger.github.io/composer/installing/using-playground-locally.html)
 
+## Available versions of Hyperledger Fabric
+This dev server package contains 2 different levels of fabric. 
+1. A released version Hyperledger Fabric V1.0
+2. A pre-release version of Hyperledger Fabric V1.1
+
+You can select a version by setting the environment variable `FABRIC_VERSION`. If set to `hlfv1` or not set you
+will get Hyperledger Fabric v1.0. If set to `hlfv11` you will get the pre-release version of Hyperledger Fabric V1.1
+If you are using Hyperledger Composer v0.16.x then you will want to use Hyperledger Fabric V1.0. If you are using
+Hyperledger Composer v0.17 or later then you will want to use Hyperledger Fabric V1.1.
+
 # Usage
 
 ## Step 1: Getting Hyperledger Fabric running
@@ -24,8 +34,13 @@ $ mkdir ~/fabric-tools && cd ~/fabric-tools
 $ curl -O https://raw.githubusercontent.com/hyperledger/composer-tools/master/packages/fabric-dev-servers/fabric-dev-servers.tar.gz
 $ tar xzf fabric-dev-servers.tar.gz
 ```
+2. Select the version of Hyperledger Fabric you wish to use. If for example you are using Hyperledger Composer v0.17
+or higher then you should select Hyperledger Fabric V1.1 usually by exporting the environment variable as follows
+```
+export FABRIC_VERSION=hlfv11
+```
 
-2. If this is the first time that you have run these scripts, you'll need to download Hyperledger Fabric first. If you have already downloaded Hyperledger Fabric, then first start Hyperledger Fabric, and then create a Hyperledger Composer PeerAdmin card. After that you can then choose to stop Hyperledger Fabric, and start it again later. Alternatively, to completely clean up, you can teardown Hyperledger Fabric.
+3. If this is the first time that you have run these scripts, you'll need to download Hyperledger Fabric first. If you have already downloaded Hyperledger Fabric, then first start Hyperledger Fabric, and then create a Hyperledger Composer PeerAdmin card. After that you can then choose to stop Hyperledger Fabric, and start it again later. Alternatively, to completely clean up, you can teardown Hyperledger Fabric.
 
 All the scripts will be available in the directory `~/fabric-tools`. A typical sequence of commands for using these scripts with Hyperledger Composer would be:
 
@@ -129,4 +144,12 @@ For all Docker containers or images (not just Hyperledger Fabric and Hyperledger
 2) Remove Images
 3) Quit
 Please select which option >
+```
+
+# Development Mode when using Hyperledger Fabric V1.1
+There maybe a need to put Hyperledger Fabric into development mode. You would only need to do this for certain
+circumstances, for example if you are a contributer and you have a need to debug composer code. To start the fabric
+in development mode you pass the parameter -d or --dev to `startFabric.sh`, do for example
+```
+startFabric.sh --dev
 ```
