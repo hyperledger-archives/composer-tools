@@ -21,7 +21,7 @@ Parse_Arguments() {
 			--help)
 				HELPINFO=true
 				;;
-            --dev | -n)
+            --dev | -d)
 				FABRIC_DEV_MODE=true
 				;;
 		esac
