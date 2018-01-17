@@ -57,12 +57,13 @@ get_command_info()
     echo 'Error: composer is not installed.' >&2
   else
     echo 'The current version of Composer is' $(composer --version) >> $ENVOUTFILE
+    echo 'The current PATH to the composer command is' $(which composer) >> $ENVOUTFILE
     COMPOSERCMD=composer
   fi
   if ! [ -x "$(command -v docker-compose)" ]; then
     echo 'docker-compose is not installed.' >&2
   else
-    echo 'The current version of Docker is' $(docker-compose --version) >> $ENVOUTFILE
+    echo 'The current version of docker-compose is' $(docker-compose --version) >> $ENVOUTFILE
     DOCKER_COMPOSE_CMD=docker-compose
   fi
   if ! [ -x "$(command -v docker)" ]; then
