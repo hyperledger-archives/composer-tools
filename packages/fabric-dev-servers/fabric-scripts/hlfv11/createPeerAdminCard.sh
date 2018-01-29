@@ -46,7 +46,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 echo
 # check that the composer command exists at a version >v0.15
 if hash composer 2>/dev/null; then
-    composer --version | awk -F. '{if ($2<16) exit 1}'
+    composer --version | awk -F. '{if ($2<17) exit 1}'
     if [ $? -eq 1 ]; then
         echo 'Cannot use this version of composer with this level of fabric' 
         exit 1
