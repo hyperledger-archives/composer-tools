@@ -45,12 +45,12 @@
     "logError": true
   },
   "devDependencies": {
+    "chai": "3.5.0",
+    "chai-as-promised": "6.0.0",
     "eslint": "3.5.0",
     "istanbul": "0.4.5",
     "license-check": "1.1.5",
-    "chai": "3.5.0",
-    "chai-as-promised": "6.0.0",
-    "mocha": "3.4.2",
+    "mocha": "^3.4.2",
     "nyc": "11.1.0",
     "sinon": "2.3.8"
   },
@@ -59,6 +59,7 @@
     "ajv": "6.1.1",
     "chalk": "2.3.0",
     "js-yaml": "3.10.0",
+    "sinon-chai": "^2.14.0",
     "valid-url": "1.0.9"
   }
 }
