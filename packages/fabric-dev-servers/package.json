@@ -15,6 +15,7 @@
     "solutions"
   ],
   "scripts": {
+    "prepare": "npm run build-archives",
     "build-archives": "gulp --gulpfile .travis/gulp.js"
   },
   "devDependencies": {
