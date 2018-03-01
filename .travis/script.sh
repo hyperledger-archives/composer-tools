@@ -40,6 +40,11 @@ echo ${ME} `date`
 
 cd "${DIR}" && npm install
 
+# run the tests
+npm test 2>&1
+
+
+
 #cd ${DIR} && pwd
 cd "${DIR}"/packages/fabric-dev-servers
 npm install

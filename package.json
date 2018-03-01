@@ -14,7 +14,7 @@
   "scripts": {
     "postinstall": "npm run pkgcheck && npm run bootstrap",
     "bootstrap": "lerna bootstrap",
-    "test": "lerna run test",
+    "test": "lerna run --ignore '@(composer-protobuf|fabric-dev-servers)'  test",
     "scanlicenses": "./scripts/scan-all-licenses.sh",
     "pkgcheck": "node ./scripts/pkgcheck.js",
     "pkgstamp": "node ./scripts/pkgstamp.js",
@@ -22,7 +22,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/hyperledger/composer-sample-networks"
+    "url": "https://github.com/hyperledger/composer-tools"
   },
   "keywords": [
     "blockchain",
