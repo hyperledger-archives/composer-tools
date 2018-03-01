@@ -43,15 +43,19 @@ fi
 # Grab the current directory
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+if [ -z "${HL_COMPOSER_CLI}" ]; then
+  HL_COMPOSER_CLI=$(which composer)
+fi
+
 echo
 # check that the composer command exists at a version >v0.15
-if hash composer 2>/dev/null; then
-    composer --version | awk -F. '{if ($2<17) exit 1}'
+if hash "${HL_COMPOSER_CLI}"  2>/dev/null; then
+    "${HL_COMPOSER_CLI}"  --version | awk -F. '{if ($2<17) exit 1}'
     if [ $? -eq 1 ]; then
         echo 'Cannot use this version of composer with this level of fabric' 
         exit 1
     else
-        echo Using composer-cli at $(composer --version)
+        echo Using composer-cli at $("${HL_COMPOSER_CLI}" --version)
     fi
 else
     echo 'Need to have composer-cli installed at v0.16 or greater'
@@ -127,15 +131,15 @@ else
     CARDOUTPUT=PeerAdmin@hlfv1.card
 fi
 
-composer card create -p DevServer_connection.json -u PeerAdmin -c "${CERT}" -k "${PRIVATE_KEY}" -r PeerAdmin -r ChannelAdmin --file $CARDOUTPUT
+"${HL_COMPOSER_CLI}"  card create -p DevServer_connection.json -u PeerAdmin -c "${CERT}" -k "${PRIVATE_KEY}" -r PeerAdmin -r ChannelAdmin --file $CARDOUTPUT
 
 if [ "${NOIMPORT}" != "true" ]; then
-    if composer card list -n PeerAdmin@hlfv1 > /dev/null; then
-        composer card delete -n PeerAdmin@hlfv1
+    if "${HL_COMPOSER_CLI}"  card list -n PeerAdmin@hlfv1 > /dev/null; then
+        "${HL_COMPOSER_CLI}"  card delete -n PeerAdmin@hlfv1
     fi
 
-    composer card import --file /tmp/PeerAdmin@hlfv1.card 
-    composer card list
+    "${HL_COMPOSER_CLI}"  card import --file /tmp/PeerAdmin@hlfv1.card 
+    "${HL_COMPOSER_CLI}"  card list
     echo "Hyperledger Composer PeerAdmin card has been imported, host of fabric specified as '${HOST}'"
     rm /tmp/PeerAdmin@hlfv1.card
 else
