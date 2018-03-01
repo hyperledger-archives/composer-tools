@@ -9,12 +9,6 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
 date
 ME=`basename "$0"`
 
-# Check that this is the right node.js version.
-if [ "${TRAVIS_NODE_VERSION}" != "" -a "${TRAVIS_NODE_VERSION}" != "6" ]; then
-    echo Not executing as not running primary node.js version.
-    exit 0
-fi
-
 # Check that this is the main repository.
 if [[ "${TRAVIS_REPO_SLUG}" != hyperledger* ]]; then
     echo "Skipping deploy; wrong repository slug."
