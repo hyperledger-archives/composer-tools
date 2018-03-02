@@ -6,8 +6,8 @@ network for development purposes. You can use the Hyperledger Fabric network cre
 
 ## Available versions of Hyperledger Fabric
 This dev server package contains scripts to setup 2 different levels of fabric. 
-1. A released version Hyperledger Fabric V1.0
-2. A alpha version of Hyperledger Fabric V1.1
+1. A released version of Hyperledger Fabric V1.0
+2. A RC1 version of Hyperledger Fabric V1.1
 
 You can select a version by setting the environment variable `HL_FABRIC_VERSION`. If set to `hlfv1` or not set you
 will get Hyperledger Fabric v1.0. If set to `hlfv11` you will get the pre-release version of Hyperledger Fabric V1.1
