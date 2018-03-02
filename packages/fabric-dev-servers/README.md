@@ -1,19 +1,34 @@
 # fabric-dev-servers
 
-This repository contains a number of helper scripts to start up a Hyperledger Fabric v1.0
+This repository contains a number of helper scripts to start up a Hyperledger Fabric v1.1
 network for development purposes. You can use the Hyperledger Fabric network created by these scripts to quickly deploy Blockchain business networks built using Hyperledger Composer, and test applications that depend on a running network.
 
-This package is also available inside the `composer-data` directory that is created via the [local installer] for Hyperledger Composer: [Installing and running Hyperledger Composer Playground locally](https://hyperledger.github.io/composer/installing/using-playground-locally.html)
 
 ## Available versions of Hyperledger Fabric
-This dev server package contains 2 different levels of fabric. 
+This dev server package contains scripts to setup 2 different levels of fabric. 
 1. A released version Hyperledger Fabric V1.0
-2. A pre-release version of Hyperledger Fabric V1.1
+2. A alpha version of Hyperledger Fabric V1.1
 
-You can select a version by setting the environment variable `FABRIC_VERSION`. If set to `hlfv1` or not set you
+You can select a version by setting the environment variable `HL_FABRIC_VERSION`. If set to `hlfv1` or not set you
 will get Hyperledger Fabric v1.0. If set to `hlfv11` you will get the pre-release version of Hyperledger Fabric V1.1
 If you are using Hyperledger Composer v0.16.x then you will want to use Hyperledger Fabric V1.0. If you are using
 Hyperledger Composer v0.17 or later then you will want to use Hyperledger Fabric V1.1.
+
+Some of the scripts use the Hyperleder Composer CLI; previously these have used the composer executable that was on the system path. 
+If you are running with a locally installed composer CLI, or a development build this meant that using the scripts could be hard. 
+
+Setting  `HL_COMPOSER_CLI` to the actual version of composer you want will ensure it used. For example for a local install follow this
+
+```bash
+$ npm install composer-cli
+$ # install locally to the node_modules directory of this packge
+$ export HL_COMPOSER_CLI=$(npm bin)/composer
+$ # this will now use the local version
+$ npx composer --version
+$ # this can be used to get npm to run the local version.
+```
+
+> Note: to be more consistent the environment variables now also have `HL_` prefixed alternatives
 
 # Usage
 
@@ -58,6 +73,8 @@ $ cd ~/fabric-tools
 $ ./stopFabric.sh
 $ ./teardownFabric.sh
 ```
+
+4. In practice however, this is a long set of commands to run, the `startFabric.sh` script will stop running containers, and start them. Docker will download any images that it doesn't have. 
 
 ## Script details
 

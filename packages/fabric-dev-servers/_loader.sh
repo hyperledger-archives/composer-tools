@@ -11,7 +11,7 @@ if [ "${HL_FABRIC_VERSION}" ]; then
 fi
 
 if [ "${HL_FABRIC_START_TIMEOUT}" ]; then
-  export FABRIC_VERSION="${HL_FABRIC_START_TIMEOUT}"
+  export FABRIC_START_TIMEOUT="${HL_FABRIC_START_TIMEOUT}"
 fi
 
 if [ -z ${FABRIC_VERSION+x} ]; then
