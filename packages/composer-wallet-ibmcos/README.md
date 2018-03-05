@@ -13,8 +13,11 @@ Also it assumes you are familar with NPM, and the card concept in the Composer
 ### *Step 1*
 
 - Signup for a IBM Cloud account (the developer plan is free and includes object storage)
-- Create a Cloud Object Store bucket. Would suggest to under the 'Select Service ID' automatically create a service
-- Also if you want to use the AWS CLI to access the bucket specify the following in the Add Inline Configuration Parameters (Optional) field: {"HMAC":true}
+- Create a Cloud Object Store bucket. 
+- Select the Credentials link from the left hand panel and click the button to create a new Credential 
+- Under the 'Select Service ID' dropdown, select to automatically create a service
+- Also if you want to use the AWS CLI to access the bucket specify the following in the Add Inline Configuration Parameters (Optional) field: `{"HMAC":true}`
+- Once the credential has been created, view it and save it away for later use when configuring Composer.
 
 You will need then to keep a copy of the Service Credentials. These are of the form 
 ```
