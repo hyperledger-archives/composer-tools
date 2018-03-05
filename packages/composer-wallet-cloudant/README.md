@@ -33,6 +33,8 @@ You will need then to keep a copy of the Service Credentials. These are of the f
 }
 ```
 
+You won't need to use all of these values, and some names are similar to the ones that actually need to be used. More details below.
+
 More information in the [IBM Cloud Documentation](https://console.bluemix.net/docs/services/cloud-object-storage/iam/service-credentials.html#service-credentials) 
 
 ### *Step 2*
@@ -41,7 +43,7 @@ Firstly, this module that provides the support to connect from Composer to the O
 This is loaded using a node.js require statment, and the current preview will look for this in the global modules. 
 
 ```
-npm install -g @ampretia/composer-waller-ibmcos
+npm install -g @ampretia/composer-wallet-ibmcos
 ```
 
 ### *Step 3*
@@ -77,7 +79,7 @@ Assuming that you do not have the config directory already - this is using the s
 - `type` is the name of this module
 - `desc` is some text for the humans
 - `bucketName` is the buckName you created
-- `endpoint` is the *Service Endpoint* from the *Endpoint* section in the Object Store dasboard
+- `endpoint` is the *Service Endpoint* from the *Endpoint* section in the Object Store dasboard. _NOT_ the endpoint from the credentials
 - `apikey` is the apikey from the service credentials
 - `serviceInstanceId` is the *resource_instance_id* from the service credentials
 

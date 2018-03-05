@@ -233,21 +233,26 @@ class IBMCOSWallet extends Wallet{
      *
      * @param {String} name The name of the key to use.
      * @param {String} value The data.
-     * @param {Object} [meta] Optional object with meta data
+     * @param {Map|Object} [meta] Optional MAP with meta data, if an object then it will be stored in a map under key 'meta'
      * @return {Promise} A promise that is resolved when complete, or rejected if an error occurs
      */
     async put(name, value,meta = {}) {
         if (!name) {
             throw new Error('Name must be specified');
         }
-
+        let md;
+        if (meta instanceof Map){
+            md=meta;
+        }else {
+            md = new Map().set('meta',meta);
+        }
         let type = this._determineType(value);
         let uploadParams = {
             Bucket:       this.bucketName,
             Key:          this._path(name),
             Body:         value,
             ContentType : type,
-            Metadata :    meta
+            Metadata :    md
         };
 
         return await this.cos.putObject(uploadParams).promise();

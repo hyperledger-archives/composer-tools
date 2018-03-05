@@ -74,7 +74,7 @@ describe('Composer wallet implementation', function () {
                         let result = await wallet.listNames();
                         expect(result).to.be.an('array');
                         expect(result.length).to.equal(2);
-                        expect(result).to.have.members(['Batman-Orginal','Batman-Reloaded']);
+                        expect(result).to.have.deep.members(['Batman-Original','Batman-Reloaded']);
                     });
                 });
 
