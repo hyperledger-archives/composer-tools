@@ -2,8 +2,6 @@
 
 This is Hyperledger Composer Wallet implementation using the [IBM Cloud Object Storage](https://www.ibm.com/cloud/object-storage) as a store.
 
-_ *NOTE* that this is based on the preview version of the 'Cloud Wallet' feature. The API that needs to be implemented should be expected to change_
-
 This uses the S3 API, so conversion to other Object Storage services should be feasible.
 
 ## Usage
