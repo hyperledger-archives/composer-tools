@@ -33,7 +33,7 @@ Firstly, this module that provides the support to connect from Composer to the O
 This is loaded using a node.js require statment, and the current preview will look for this in the global modules. 
 
 ```
-npm install -g composer-waller-redis
+npm install -g composer-wallet-redis
 ```
 
 ### *Step 3*
@@ -75,7 +75,7 @@ Any options specified in options, will be passed directly into the `redis.create
 As this is using the *config* module specifing the details on the command line via environment variables can be achieved by
 
 ```
-export NODE_CONFIG={"composer":{"wallet":{"type":"@ampretia/composer-wallet-redis","desc":"Uses  a local redis instance,"options":{}}}}
+export NODE_CONFIG={"composer":{"wallet":{"type":"composer-wallet-redis","desc":"Uses  a local redis instance,"options":{}}}}
 ```
 
 The any application (or command line, eg `composer card list`) that is in this shell will use the cloud wallets. 
