@@ -14,7 +14,7 @@
 
 'use strict';
 
-const cloudstore = require('./lib/ibmcoswallet');
+const cloudstore = require('./lib/cloudantwallet');
 
 module.exports.version = require('./package.json').version;
 module.exports.description = require('./package.json').version;

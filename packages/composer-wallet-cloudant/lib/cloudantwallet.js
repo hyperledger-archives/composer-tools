@@ -18,18 +18,16 @@
 const Wallet = require('composer-common').Wallet;
 const Logger = require('composer-common').Logger;
 
-const path = require('path');
+let Cloudant = require('@cloudant/cloudant');
 
-// implementation that we are uising
-const ObjectStore = require('ibm-cos-sdk');
 
 // Get a logger from Composer to use
-const LOG = Logger.getLog('wallet/IBMCOSCardStore');
+const LOG = Logger.getLog('wallet/CloudantWallet');
 
 /** */
-class IBMCOSWallet extends Wallet{
+class CloudantWallet extends Wallet {
 
-    /**
+    /**s
      * The constructor is passed the options as configured by the user.  The JSON structure of the configuration is
      * "composer": {
      *    "cardstore": {
@@ -49,58 +47,55 @@ class IBMCOSWallet extends Wallet{
      * The contents of the options element are passed to this Constructore as an object
      * @param {Object} options Options for this implementations
      */
-    constructor(options){
+    constructor(options) {
         super();
 
         if (!options) {
             throw new Error('Need configuration');
         }
-        if (!options.endpoint){
-            throw new Error('Need an endpoint in options');
-        }
-        if (!options.apikey){
-            throw new Error('Need an apiKey in options');
-        }
-        if (!options.serviceInstanceId){
-            throw new Error('Need an serviceInstanceId in options');
-        }
-        if (!options.bucketName){
-            throw new Error('Need an bucketName in options');
-        }
-        if (!options.namePrefix){
-            throw new Error('Need an namePrefix in options');
-        }
 
-        let objectStoreConfig = {
-            endpoint: options.endpoint,
-            apiKeyId: options.apikey,
-            ibmAuthEndpoint: 'https://iam.ng.bluemix.net/oidc/token',
-            serviceInstanceId: options.serviceInstanceId
+        // Initialize the library with my account.
+        let config = {
+            account: options.username,
+            password: options.password,
+            plugins: 'promises'
         };
 
-        this.bucketName = options.bucketName;
+        this.cloudant = Cloudant(config);
 
-        LOG.info('Connecting with config',objectStoreConfig);
+        this.store = this.cloudant.db.use(options.database);
+        LOG.info('Connecting to cloudant');
 
-        this.cos = new ObjectStore.S3(objectStoreConfig);
+        // need this to help the code using the wallet achieve separation
         this.namePrefix = options.namePrefix;
+
+
+
     }
 
     /**
-     * Get a "path name", this is not part of the interface but is used to create a suitable name
-     * to achieve separation of entries
+     * Gets the document representing the current wallet
      *
-     * @private
-     * @param {String} name name to use as the key
-     * @return {String} full 'path' name
+     * @return {Promise} resolve with the document
      */
-    _path(name) {
-        if (name.startsWith(this.namePrefix)){
-            return name;
-        }else {
-            return path.join(this.namePrefix,name);
+    async _getDocument(){
+        // create a document if one does not exist already
+        try {
+
+            let retval = await this.store.get(this.namePrefix, { revs_info: true });
+            return retval;
+
+        } catch (err){
+            if (err._response.statusCode === 404){
+                // create the document
+                let retVal = await this.store.insert({ version: 'humbolt' , payload: {}}, this.namePrefix);
+                return retVal;
+            }
+            throw err;
         }
     }
+
+
 
     /**
      * List all of the names in the wallet as scoped by the prefix; this is the names
@@ -115,18 +110,11 @@ class IBMCOSWallet extends Wallet{
      * error.
      */
     async listNames() {
-        let params = {
-            Bucket: this.bucketName,
-            Prefix: this.namePrefix
-        };
-        // using prefix option to restrict to this prefix
 
-        let value = await this.cos.listObjects(params).promise();
-        let listOfCredentialNames = value.Contents.map( (e) => {
-            return e.Key.replace(this.namePrefix+path.sep,'');
-        } );
-
-        return listOfCredentialNames;
+        let d = await this._getDocument();
+        let payload = d.payload || {};
+        let names = Object.keys(payload);
+        return names;
     }
 
     /**
@@ -135,20 +123,16 @@ class IBMCOSWallet extends Wallet{
      *
      * @return {Promise} A Promise that is resolved with a map of the names and the values
      */
-    async getAll(){
-        let params = {
-            Bucket: this.bucketName,
-            Prefix: this.namePrefix
-        };
-        // using prefix option to restrict to this prefix
+    async getAll() {
+        let d = await this._getDocument();
+        let payload = d.payload || {};
+        let listNames = Object.keys(payload);
 
-        const results = new Map();
-        let cardMetaData = await this.cos.listObjects(params).promise();
-
+        let results = new Map();
         // use the keys to get the data, the get handles the types as needed
-        for (const data of cardMetaData.Contents) {
-            let mapKey = data.Key.replace(this.namePrefix+path.sep,'');
-            results.set(mapKey, await this.get(data.Key));
+        for (const mapKey of listNames) {
+            let value = this._convertValue(payload[mapKey]);
+            results.set(mapKey, value);
         }
 
         return results;
@@ -168,19 +152,13 @@ class IBMCOSWallet extends Wallet{
         if (!name) {
             throw new Error('Name must be specified');
         }
-        let params = {Bucket: this.bucketName, Key: this._path(name)};
-
-        try {
-            await this.cos.headObject(params).promise();
+        let d = await this._getDocument();
+        let payload = d.payload || {};
+        if (payload[name]){
             return true;
-        } catch (err) {
-            if (err && err.code === 'NotFound') {
-                return false;
-            } else {
-                throw err;
-            }
+        }else {
+            return false;
         }
-
     }
 
     /**
@@ -196,19 +174,31 @@ class IBMCOSWallet extends Wallet{
             throw new Error('Name must be specified');
         }
 
-        let params = {Bucket: this.bucketName, Key: this._path(name)};
-        let value = await this.cos.getObject(params).promise();
-        let returnValue;
+        let d = await this._getDocument();
+        let payload = d.payload || {};
+        if (payload[name]){
+            return this._convertValue(payload[name]);
 
-
-        // check the returned type and see what to do
-        if (value.ContentType === 'text/plain'){
-            returnValue = value.Body.toString();
         } else {
-            returnValue = value.Body;
+            throw new Error(`${name} does not exist`);
         }
 
-        return returnValue;
+    }
+
+    /**
+     * Converts the value to the correct type
+     *
+     * @param {Object} data payload that needs to be converted
+     * @return {Buffer|String} type correctly processed or and erroe
+     */
+    _convertValue(data){
+        if (data.type==='text/plain'){
+            return JSON.parse(data.value);
+        } else if (data.type==='application/octet-stream') {
+            return Buffer.from(JSON.parse(data.value),'base64');
+        } else {
+            throw new Error(`Unknown type being retrieved ${data.type}`);
+        }
     }
 
     /**
@@ -216,11 +206,11 @@ class IBMCOSWallet extends Wallet{
      * @param {String|Buffer} value to check
      * @return {String} of mime type, or throw an error
      */
-    _determineType(value){
+    _determineType(value) {
 
-        if (value instanceof Buffer){
+        if (value instanceof Buffer) {
             return 'application/octet-stream';
-        } else if (value instanceof String  || typeof value === 'string'){
+        } else if (value instanceof String || typeof value === 'string') {
             return 'text/plain';
         } else {
             throw new Error('Unkown type being stored');
@@ -236,26 +226,34 @@ class IBMCOSWallet extends Wallet{
      * @param {Map|Object} [meta] Optional MAP with meta data, if an object then it will be stored in a map under key 'meta'
      * @return {Promise} A promise that is resolved when complete, or rejected if an error occurs
      */
-    async put(name, value,meta = {}) {
+    async put(name, value, meta = {}) {
         if (!name) {
             throw new Error('Name must be specified');
         }
-        let md;
-        if (meta instanceof Map){
-            md=meta;
-        }else {
-            md = new Map().set('meta',meta);
-        }
-        let type = this._determineType(value);
-        let uploadParams = {
-            Bucket:       this.bucketName,
-            Key:          this._path(name),
-            Body:         value,
-            ContentType : type,
-            Metadata :    md
+
+        let d = await this._getDocument();
+        // need to update the docment with the ky and the value
+        let data = {
+            _id : d.id || d._id,
+            _rev: d.rev || d._rev,
+            payload : d.payload || {}
         };
 
-        return await this.cos.putObject(uploadParams).promise();
+
+        data.payload[name] = {
+            type: this._determineType(value)            ,
+            meta : JSON.stringify(meta)
+        };
+
+        if (data.payload[name].type === 'text/plain' ){
+            data.payload[name].value=JSON.stringify(value);
+        } else {
+            data.payload[name].value=JSON.stringify(Buffer.from(value).toString('base64'));
+        }
+
+
+        return await this.store.insert(data, this.namePrefix);
+
     }
 
     /**
@@ -270,15 +268,20 @@ class IBMCOSWallet extends Wallet{
         if (!name) {
             throw new Error('Name must be specified');
         }
-
-        let params = {
-            Bucket: this.bucketName,
-            Key: this._path(name)
+        let d = await this._getDocument();
+        // need to update the docment with the ky and the value
+        // need to update the docment with the ky and the value
+        let data = {
+            _id : d.id || d._id,
+            _rev: d.rev || d._rev,
+            payload : d.payload || {}
         };
 
-        return await this.cos.deleteObject(params).promise();
+        delete data.payload[name];
+        return await this.store.insert(data, this.namePrefix);
+
     }
 
 }
 
-module.exports = IBMCOSWallet;
+module.exports = CloudantWallet;

@@ -23,12 +23,27 @@ const sinon = require('sinon');
 
 const CLOUD_CONFIG = require('./config');
 const cloneDeep = require('lodash.clonedeep');
-
-
+const delay = require('delay');
+let counter=0;
 
 describe('Composer wallet implementation', function () {
 
+    before('cleaning out entire db',async ()=>{
+        console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+        await delay(100);
+        await CLOUD_CONFIG.clean();
+    });
+
+    after('cleaning out entire db',async ()=>{
+        await delay(100);
+        await CLOUD_CONFIG.clean();
+        console.log('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<');
+    });
+
     describe('Wrong Config settings', function () {
+        beforeEach(async () => {
+            await delay(100);
+        });
 
         CLOUD_CONFIG.wrongConfigs.forEach((cfg) => {
             it('should fail to create with faulty config', function () {
@@ -49,17 +64,26 @@ describe('Composer wallet implementation', function () {
                 let sandbox;
                 let wallet;
                 beforeEach(async () => {
+                    await delay(100);
                     sandbox = sinon.sandbox.create();
                     let config = cfg;
-                    config.namePrefix = 'testing';
+                    config.namePrefix = 'testing-'+(counter++);
 
-                    await CLOUD_CONFIG.clean();
+
                     wallet = CLOUD_CONFIG.getStore(config);
                 });
 
                 afterEach(() => {
                     sandbox.restore();
                     wallet = null;
+                });
+
+                describe('#basic-dev-only', async function() {
+                    xit('b1', async function(){
+                        await wallet.put('Batman-Original', 'Breathe in your fears. Face them. To conquer fear, you must become fear.');
+                        let retVal = await wallet.get('Batman-Original');
+                        expect(retVal).to.equal('Breathe in your fears. Face them. To conquer fear, you must become fear.');
+                    });
                 });
 
                 describe('#listNames', async function () {
@@ -176,6 +200,19 @@ describe('Composer wallet implementation', function () {
                         return wallet.put('ThePenguin', new Umbrella()).should.be.rejectedWith('Unkown type being stored');
                     });
                 });
+
+                // needs to be an independant test - as this is white box testing
+                it('should make sure invalid types on get are rejected', async function () {
+                    (()=>
+                        {
+                        wallet._convertValue({type:'wibble'});
+                    })
+                .should.throw(/Unknown type being retrieved/);
+                });
+
+
+
+
             });
 
             describe('Two Concurrent Wallets Path', () => {
@@ -183,12 +220,14 @@ describe('Composer wallet implementation', function () {
                 let walletAlpha;
                 let walletBeta;
                 beforeEach(async () => {
+                    await delay(100);
                     await CLOUD_CONFIG.clean();
+                    await delay(100);
                     sandbox = sinon.sandbox.create();
                     let configAlpha = cloneDeep(cfg);
-                    configAlpha.namePrefix = 'alpha';
+                    configAlpha.namePrefix = 'alpha-'+counter;
                     let configBeta = cloneDeep(cfg);
-                    configBeta.namePrefix = 'beta';
+                    configBeta.namePrefix = 'beta-'+counter;
 
                     walletAlpha = CLOUD_CONFIG.getStore(configAlpha);
                     walletBeta = CLOUD_CONFIG.getStore(configBeta);

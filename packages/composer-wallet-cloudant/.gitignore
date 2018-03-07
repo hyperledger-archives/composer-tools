@@ -51,4 +51,5 @@ chaincode/pkg
 
 .vscode
 
-conga@profileName.card
+creds.json
+

@@ -14,44 +14,40 @@
 
 'use strict';
 
+const creds = require('../creds.json');
+
 module.exports.getStore = require('../index.js').getStore;
 module.exports.wrongConfigs = [
-    { c: null, text: 'Need configuration' },
-    { c: {}, text: 'Need an endpoint in options' },
-    { c: { namePrefix:'xx,',endpoint: 'xx', bucketName: 'xx', apikey: 'xx' }, text: 'Need an serviceInstanceId in options' },
-    { c: { namePrefix:'xx,',endpoint: 'xx', bucketName: 'xx', serviceInstanceId: 'xx' }, text: 'Need an apiKey in options' },
-    { c: { namePrefix:'xx,',endpoint: 'xx', apikey: 'xx', serviceInstanceId: 'xx' }, text: 'Need an bucketName in options' },
-    { c: { namePrefix:'xx,',bucketName: 'xx', apikey: 'xx', serviceInstanceId: 'xx' }, text: 'Need an endpoint in options' },
-    { c: { endpoint:'xx,',bucketName: 'xx', apikey: 'xx', serviceInstanceId: 'xx' }, text: 'Need an namePrefix in options' }];
+    { c: null, text: 'Need configuration' }];
+
 module.exports.correctConfigs=[
     {
-        'bucketName': 'alpha-metal',
-        'endpoint': 's3.eu-gb.objectstorage.softlayer.net',
-        'apikey': 'pPz9i1BKlT_I4A2lBtO2ITwzVPJfObcVI7vtqwlUvkf1',
-        'serviceInstanceId': 'crn:v1:bluemix:public:cloud-object-storage:global:a/f312377c857f745dd4741a70d09a8e4c:fb474f32-8d51-4864-a2e7-459105254cfd::'
+        'database': 'alpha-metal',
+        'username': creds.username,
+        'password': creds.password,
+        'host': creds.host,
+        'port': creds.port,
+        'url': creds.url
     }
 ];
 module.exports.clean=async ()=>{
 
+    let Cloudant = require('@cloudant/cloudant');
 
-    let objectStoreConfig = {
-        endpoint:'s3.eu-gb.objectstorage.softlayer.net',
-        apiKeyId: 'pPz9i1BKlT_I4A2lBtO2ITwzVPJfObcVI7vtqwlUvkf1',
-        ibmAuthEndpoint: 'https://iam.ng.bluemix.net/oidc/token',
-        serviceInstanceId:  'crn:v1:bluemix:public:cloud-object-storage:global:a/f312377c857f745dd4741a70d'
-    };
-    const ObjectStore = require('ibm-cos-sdk');
-    let cos = new ObjectStore.S3(objectStoreConfig);
-
-    let params = {
-        Bucket: 'alpha-metal'
-    };
-    let cardMetaData = await cos.listObjects(params).promise();
-
-        // use the keys to get the data, the get handles the types as needed
-    for (const data of cardMetaData.Contents) {
-        params.Key = data.Key;
-        await cos.deleteObject(params).promise();
+// Initialize the library with my account.
+    let cloudant = Cloudant({account:creds.username, password:creds.password,plugins: 'promises' });
+    try {
+        await cloudant.db.destroy('alpha-metal');
+    } catch (err) {
+        if (err.statusCode === 404){
+            //ok if db not there
+        }else {
+            throw err;
+        }
+        // console.log(err._response);
     }
+
+    await cloudant.db.create('alpha-metal');
+
 
 };

@@ -1,6 +1,6 @@
 {
-  "name": "@ampretia/composer-wallet-ibmcos",
-  "version": "0.1.3",
+  "name": "@ampretia/composer-wallet-cloudant",
+  "version": "0.1.0",
   "description": "Hyperledger Composer Wallet implementation for the IBM Cloud Object Store",
   "engines": {
     "node": ">=8",
@@ -13,7 +13,7 @@
     "postlint": "npm run licchk",
     "licchk": "license-check",
     "test": "nyc mocha --recursive -t 10000",
-    "mocha": "mocha --recursive -t 10000",
+    "mocha": "mocha --recursive -t 10000 test",
     "nyc": "nyc mocha --recursive -t 10000"
   },
   "repository": {
@@ -31,6 +31,7 @@
     "chai": "3.5.0",
     "chai-as-promised": "6.0.0",
     "chai-things": "0.2.0",
+    "delay": "2.0.0",
     "eslint": "3.17.1",
     "license-check": "1.1.5",
     "lodash.clonedeep": "4.5.0",
@@ -39,7 +40,7 @@
     "sinon": "2.3.8"
   },
   "dependencies": {
-    "ibm-cos-sdk": "1.1.1",
+    "@cloudant/cloudant": "2.1.0",
     "composer-common": "^0.17.3"
   },
   "license-check-config": {
