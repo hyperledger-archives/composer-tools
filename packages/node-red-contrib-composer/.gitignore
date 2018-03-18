@@ -49,3 +49,5 @@ out
 # Mac files.
 **/.DS_Store
 /.idea/
+
+package-lock.json
