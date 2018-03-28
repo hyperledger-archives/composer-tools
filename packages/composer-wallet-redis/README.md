@@ -5,7 +5,7 @@ This is Hyperledger Composer Wallet implementation using [Redis](https://redis.i
 ## Usage
 
 The steps below assume that you have an application or playground, or rest server for Hyperledger Composer that wish to use.
-Also it assumes you are familar with NPM, and the card concept in the Composer
+Also it assumes you are familar with NPM, and the basic workings of Hyperledger Composer.
 
 
 ### *Step 1*
@@ -20,17 +20,10 @@ $ # to clearout redis contents, issue this command
 $ docker exec composer-wallet-redis redis-cli -c flushall
 ```
 
-The CLI for redis can be started with
-```
-docker run -it --link composer-wallet-redis:redis --rm redis redis-cli -h redis -p 6379
-```
-
-Will refer you to web to find out more about running redis and querying it
-
 ### *Step 2*
 
 Firstly, this module that provides the support to connect from Composer to the Object Storage needs to be installed.
-This is loaded using a node.js require statment, and the current preview will look for this in the global modules. 
+This is loaded using a node.js require statment; this needs to either be installed globally, or within the current application package. 
 
 ```
 npm install -g composer-wallet-redis
@@ -75,7 +68,35 @@ Any options specified in options, will be passed directly into the `redis.create
 As this is using the *config* module specifing the details on the command line via environment variables can be achieved by
 
 ```
-export NODE_CONFIG='{"composer":{"wallet":{"type":"composer-wallet-redis","desc":"Uses  a local redis instance","options":{}}}}'
+export NODE_CONFIG={"composer":{"wallet":{"type":"composer-wallet-redis","desc":"Uses  a local redis instance,"options":{}}}}
 ```
 
-The any application (or command line, eg `composer card list`) that is in this shell will use the cloud wallets. 
+The application (or command line, eg `composer card list`) that is in this shell will use the cloud wallets backed by the redis server. 
+For ease of understanding, you may wish to create a file with the json as in the step above, but then issue this command to set it in an environment variable, assuming the file is called `default.json`.
+It doesn't matter the name of the file in this case - it's just being used to hold the json to make it easier for you to edit.
+
+```
+export NODE_CONFIG=$(cat default.json)
+```
+
+## Logging into redis
+
+It's not recommended to log into the redis cli and start modifying the contents, however for debug and education purposes it is possible. 
+To run the redis cli issue this command
+```
+docker run -it --link composer-wallet-redis:redis --rm redis redis-cli -h redis -p 6379
+```
+
+You can then issue redis command line commands to see the keys
+
+```
+> keys *
+```
+
+To clear out the data in redis, then issue
+
+```
+> flushall
+```
+
+Note that this command doesn't ask for confirmation before deleting everything so use with care.
