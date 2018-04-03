@@ -2,12 +2,17 @@
   "name": "node-red-contrib-composer",
   "version": "0.0.11",
   "description": "Hyperledger Composer nodes for node-red",
+  "scripts": {
+    "licchk": "license-check-and-add",
+    "test": "npm run licchk"
+  },
   "dependencies": {
     "composer-client": "^0.16.0-0",
     "composer-common": "^0.16.0-0"
   },
   "devDependencies": {
-    "eslint": "^3.5.0"
+    "eslint": "^3.5.0",
+    "license-check-and-add": "~2.2.0"
   },
   "license": "Apache-2.0",
   "repository": {
@@ -26,5 +31,26 @@
       "hperledger-composer-config": "nodes/hyperledger-composer-config.js"
     }
   },
-  "author": "Hyperledger Composer"
+  "author": "Hyperledger Composer",
+  "license-check-and-add-config": {
+    "folder": ".",
+    "license": "LICENSE.txt",
+    "exact_paths_method": "EXCLUDE",
+    "exact_paths": [
+      "node_modules"
+    ],
+    "file_type_method": "EXCLUDE",
+    "file_types": [
+      ".md",
+      ".yml"
+    ],
+    "insert_license": false,
+    "license_formats": {
+      "editorconfig": {
+        "eachLine": {
+          "prepend": "# "
+        }
+      }
+    }
+  }
 }
