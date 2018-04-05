@@ -15,13 +15,39 @@
     "solutions"
   ],
   "scripts": {
+    "licchk": "license-check-and-add",
     "prepare": "npm run build-archives",
-    "build-archives": "gulp --gulpfile .travis/gulp.js"
+    "build-archives": "gulp --gulpfile .travis/gulp.js",
+    "test": "npm run licchk"
   },
   "devDependencies": {
     "gulp": "^3.9.1",
     "gulp-gzip": "^1.4.0",
     "gulp-tar": "^1.9.0",
-    "gulp-zip": "^4.0.0"
-  }
+    "gulp-zip": "^4.0.0",
+    "license-check-and-add": "~2.3.0"
+  },
+  "license-check-and-add-config": {
+		"folder": ".",
+		"license": "LICENSE.txt",
+		"exact_paths_method": "EXCLUDE",
+		"exact_paths": [
+      "node_modules"
+		],
+		"file_type_method": "INCLUDE",
+		"file_types": [
+      ".js",
+			".sh"
+    ],
+    "license_formats": {
+      "js": {
+        "prepend": "/*",
+        "append": " */",
+        "eachLine": {
+          "prepend": " * "
+        }
+      }
+    },
+		"insert_license": false
+	}
 }
