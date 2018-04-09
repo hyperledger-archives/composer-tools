@@ -65,7 +65,7 @@ Assuming that you do not have the config directory already - this is using the s
 ```
 {
   "composer": {
-    "cardstore": {
+    "wallet": {
       "type": "@ampretia/composer-wallet-ibmcos",
       "desc": "Uses the IBM Cloud Object Store",
       "options": {
