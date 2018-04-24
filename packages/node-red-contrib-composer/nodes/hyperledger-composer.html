@@ -127,6 +127,9 @@
 <p>Hyperledger-Composer node. Gets an asset, or participant using the <code>msg.payload</code>.</p>
     <p>The name of the resource or transaction should be set in <code>msg.payload.$class</code></p>
     <p>The id of the resource should be set in <code>msg.payload.id</code></p>
+    <p>If <code>msg.payload.id</code> is not set and the action type is set to <code>retrieve</code>,
+all resources of the given type <code>msg.payload.$class</code> will be retrieved. Additionally,
+all resources will be resolved if the <code>retrieve</code> checkbox is checked.</p>
 </script>
 
 <script type="text/javascript">
