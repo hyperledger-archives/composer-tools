@@ -192,9 +192,19 @@ module.exports = function (RED) {
                             node.log('got asset registry');
 
                             if (resolve) {
-                                return assetRegistry.resolve(id);
+                                if (id == null) {
+                                  return assetRegistry.resolveAll();
+                                }
+                                else {
+                                  return assetRegistry.resolve(id);
+                                }
                             } else {
+                              if (id == null) {
+                                return assetRegistry.getAll();
+                              }
+                              else {
                                 return assetRegistry.get(id);
+                              }
                             }
                         })
                         .then((result) => {
@@ -213,7 +223,21 @@ module.exports = function (RED) {
                     return businessNetworkConnection.getParticipantRegistry(modelName)
                         .then((participantRegistry) => {
                             node.log('got participant registry');
-                            return participantRegistry.get(id);
+                            if (resolve) {
+                              if (id == null) {
+                                return participantRegistry.resolveAll();
+                              }
+                              else {
+                                return participantRegistry.resolve(id);
+                              }
+                            } else {
+                              if (id == null) {
+                                return participantRegistry.getAll();
+                              }
+                              else {
+                                return participantRegistry.get(id);
+                              }
+                            }
                         })
                         .then((result) => {
                             node.log('got participant');
@@ -378,12 +402,6 @@ module.exports = function (RED) {
         return Promise.resolve().then(() => {
             if (!payLoad.$class) {
                 throw new Error('$class not set in payload');
-            }
-
-            if (type === RETRIEVE) {
-                if (!payLoad.id) {
-                    throw new Error('id not set in payload');
-                }
             }
         });
     }
