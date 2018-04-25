@@ -1,19 +1,253 @@
-<script type="text/javascript">
-    RED.nodes.registerType('hyperledger-composer-config',{
-        category: 'config',
-        defaults: {
-            cardName: {value:"",required:true}
+<style>
+    .composer-button {
+        background-color: powderblue;
+        height: 2.4em;
+        width: 7.5em;
+        border: solid 1px lightgrey;
+        border-radius: 10%;
+        position: relative;
+    }
 
-        },
-        label: function() {
-            return this.cardName;
-        }
-    });
+    .upload-button {
+        position: relative;
+        display: inline-block;
+        cursor: pointer;
+    }
+
+    .upload-button input[type=file] {
+        position: absolute;
+        left: 0;
+        top: 0;
+        opacity: 0;
+    }
+
+    .upload {
+        margin-bottom: 1.5em;
+        border: 1px solid lightgray;
+        padding: 1em;
+    }
+
+    .error-message {
+        color: red;
+    }
+</style>
+<script type="text/x-red" data-template-name="hyperledger-composer-config">
+     <div class="form-row">
+        <label for="node-config-input-cardStoreLocation"><i class="fa fa-wrench"></i> Card Store Location</label>
+        <select id="node-config-input-cardStoreLocation">
+            <option value="local">Use local card store</option>
+            <option value="remote">Configure a card store</option>
+        </select>
+    </div>
+    <div id="node-config-input-cardStoreConfig-outer" style="display: none;">
+        <div class="form-row" style="margin-bottom: 0px;">
+            <label for="node-config-input-cardStoreConfig"><i class="fa fa-wrench"></i> Card Store Config</label>
+            <input type="hidden" id="node-config-input-cardStoreConfig" autofocus="autofocus">
+        </div>
+        <div class="form-row node-text-editor-row">
+            <div style="height: 250px; min-height:150px;" class="node-text-editor" id="node-config-input-card-store-editor" ></div>
+        </div>
+    </div>
+
+    <div class="form-row upload">
+        <div>Optionally Upload A Card</div>
+        <label for="node-config-input-cardUploadName"><i class="fa fa-vcard"></i> Card Name</label>
+        <div>
+            <input type="text" id="node-config-input-cardUploadName">
+            <div class="upload-button">
+                <button id="node-config-input-upload-card-button" class="composer-button">Upload Card</button>
+                <input type="file" name="myfile" id="node-config-input-file-upload" />
+            </div>
+        </div>
+        <div id="upload-error-message" class="error-message"></div>
+    </div>
+
+    <div class="form-row">
+        <label for="node-config-input-cardName"><i class="fa fa-vcard-o"></i> Card Name</label>
+        <select id="node-config-input-cardName">
+        </select>
+        <button class="composer-button get" id="node-config-input-get-card-button">Get Cards</button>
+        <div id="get-error-message" class="error-message"></div>
+    </div>
+
+
+
+
 </script>
 
-<script type="text/x-red" data-template-name="hyperledger-composer-config">
-    <div class="form-row">
-        <label for="node-config-input-cardName"><i class="icon-bookmark"></i>Card Name</label>
-        <input type="text" id="node-config-input-cardName">
-    </div>
+<script type="text/x-red" data-help-name="hyperledger-composer-config">
+  <p>Hyperledger-Composer config node. Provides the configuration for the Hyperledger-Composer nodes</p>
+
+  <h3>Card Store Location</h3>
+  <p>Choose <code>Use local card store</code> to use the card store that is on your local file system or
+  choose <code>Configure a card store</code> to specify the card store that should be used. For more info <a href="https://hyperledger.github.io/composer/latest//business-network/cloud-wallets">click here</a>
+
+  <h3>Upload A Card</h3>
+  <p>To upload a new card to use give the card a name and click <code>Upload Card</code> this will allow you to choose
+  a card to upload. Once the card is chosen the card will be imported into the card store specified above.
+  Once the card is uploaded the <code>Card Name</code> drop down will be populated with the new card and selected automatically
+  ready to be used by the configuration node as the specified card</p>
+
+  <h3>Get Cards</h3>
+  To select from an already imported card click the <code>Get Cards</code> button. This will populate the drop down with all
+  the cards in the card store configured previously. The desired card can then be selected.</p>
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('hyperledger-composer-config', {
+        category : 'config',
+        defaults : {
+            cardName : {value : "", required : true},
+            cardStoreConfig : {value : ""},
+            cardStoreLocation : {value : "local"},
+            output : {value : "str"}
+
+        },
+        label : function () {
+            return this.cardName;
+        },
+        oneditprepare : function () {
+            var that = this;
+            this.editor = RED.editor.createEditor({
+                id : 'node-config-input-card-store-editor',
+                mode : 'ace/mode/json',
+                value : $("#node-config-input-cardStoreConfig").val()
+            });
+            RED.library.create({
+                url : "functions", // where to get the data from
+                type : "function", // the type of object the library is for
+                editor : that.editor, // the field name the main text body goes to
+                fields : ['name', 'outputs']
+            });
+            this.editor.focus();
+
+            $("#node-config-input-cardStoreLocation").change(function (e) {
+                let location = $(this).val();
+                if (location === "remote") {
+                    that.cardStoreLocation = 'remote';
+                    $("#node-config-input-cardStoreConfig-outer").show();
+                } else {
+                    $("#node-config-input-cardStoreConfig").val('');
+                    that.editor.setValue('', 0);
+                    that.cardStoreLocation = 'local';
+                    $("#node-config-input-cardStoreConfig-outer").hide();
+                }
+            });
+
+            let dropDown = document.getElementById('node-config-input-cardName');
+            let getCardsButton = document.getElementById('node-config-input-get-card-button');
+            let getError = document.getElementById('get-error-message');
+            getCardsButton.addEventListener("click", function () {
+                getError.textContent = '';
+                uploadError.textContent = '';
+                let loaderDiv = document.createElement('i');
+                loaderDiv.classList.add("fa", "fa-spinner", "fa-pulse", "fa-2x", "fa-fw");
+                getCardsButton.textContent = "";
+                getCardsButton.appendChild(loaderDiv);
+                getCardsButton.disabled = true;
+
+                let cardConfig = {};
+                if (that.cardStoreLocation === 'remote') {
+                    cardConfig = JSON.parse(that.editor.getValue());
+                }
+
+                $.getJSON('composercards', cardConfig, (cardNames) => {
+                    while (dropDown.firstChild) {
+                        dropDown.removeChild(dropDown.firstChild);
+                    }
+
+                    cardNames.forEach((cardName) => {
+                        let option = document.createElement("option");
+                        option.text = cardName;
+                        option.value = cardName;
+                        dropDown.add(option);
+                    });
+                }).fail((error) => {
+                    getError.textContent = error.responseText;
+                }).always(() => {
+                    getCardsButton.removeChild(loaderDiv);
+                    getCardsButton.textContent = 'Get Cards';
+                    getCardsButton.disabled = false;
+                });
+            });
+
+            let fileUploadButton = document.getElementById('node-config-input-upload-card-button');
+            let fileUploadInput = document.getElementById('node-config-input-file-upload');
+            let uploadError = document.getElementById('upload-error-message');
+            fileUploadInput.addEventListener('change', function (event) {
+                getError.textContent = '';
+                uploadError.textContent = '';
+
+                let loaderDiv = document.createElement('i');
+                loaderDiv.classList.add("fa", "fa-spinner", "fa-pulse", "fa-2x", "fa-fw");
+                fileUploadButton.textContent = "";
+                fileUploadButton.appendChild(loaderDiv);
+                fileUploadButton.disabled = true;
+
+                const file = event.target.files[0]; // only allow one file to be uploaded
+                let reader = new FileReader();
+
+                // Closure to capture the file information.
+                reader.onload = (function () {
+                    let cardData = reader.result;
+
+                    const cardFile = new File([cardData], file.name, {
+                        type : 'application/octet-stream',
+                        lastModified : Date.now()
+                    });
+
+                    const formData = new FormData();
+                    formData.append('file', cardFile);
+
+                    let cardConfig = "{}";
+                    if (that.cardStoreLocation === 'remote') {
+                        cardConfig = that.editor.getValue();
+                    }
+
+                    formData.append('cardStoreConfig', cardConfig);
+                    formData.append('cardName', $("#node-config-input-cardUploadName").val());
+
+                    jQuery.ajax({
+                        url : 'composercards',
+                        data : formData,
+                        cache : false,
+                        contentType : false,
+                        processData : false,
+                        method : 'POST',
+                        type : 'POST',
+                        success : (cardName) => {
+                            let option = document.createElement("option");
+                            option.text = cardName;
+                            option.value = cardName;
+                            dropDown.add(option);
+
+                            dropDown.selectedIndex = dropDown.length - 1;
+
+                            fileUploadButton.removeChild(loaderDiv);
+                            fileUploadButton.textContent = 'Upload Card';
+                            fileUploadButton.disabled = false;
+                        }
+                    }).fail((error) => {
+                        uploadError.textContent = error.responseText;
+                    }).complete(() => {
+                        fileUploadButton.removeChild(loaderDiv);
+                        fileUploadButton.textContent = 'Upload Card';
+                        fileUploadButton.disabled = false;
+                    });
+                });
+
+                reader.readAsArrayBuffer(file);
+
+            }, false);
+        },
+        oneditsave : function () {
+            $('#node-config-input-cardStoreConfig').val(this.editor.getValue());
+            this.editor.destroy();
+            delete this.editor;
+        },
+        oneditcancel : function () {
+            this.editor.destroy();
+            delete this.editor;
+        }
+    });
 </script>
