@@ -1,8 +1,6 @@
 # node-red-contrib-hyperledger-composer
 A set of nodes for interacting with Hyperledger Composer
 
-*Note : These node will only work if you are running node red locally. It won't work if you are using node red on bluemix.*
-
 ## Hyperledger-Composer-Out
 A node red output node that allows you to create, update or delete assets or participants and submit transactions.
 

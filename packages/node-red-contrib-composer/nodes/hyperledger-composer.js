@@ -14,6 +14,7 @@
 
 'use strict';
 module.exports = function (RED) {
+    const util = require('util');
     const AssetDeclaration = require('composer-common').AssetDeclaration;
     const BusinessNetworkConnection = require('composer-client').BusinessNetworkConnection;
     const ParticipantDeclaration = require('composer-common').ParticipantDeclaration;
@@ -22,9 +23,10 @@ module.exports = function (RED) {
     let connected = false;
     let connecting = false;
     let connectionPromise;
-    let businessNetworkConnection = new BusinessNetworkConnection();
+    let businessNetworkConnection;
 
     let cardName;
+    let cardConfig;
     let businessNetworkDefinition, serializer;
 
     let listener;
@@ -41,6 +43,7 @@ module.exports = function (RED) {
         node.log('settings: cardName' + cardName);
         connecting = true;
         connected = false;
+        businessNetworkConnection = new BusinessNetworkConnection(cardConfig.composer);
         connectionPromise = businessNetworkConnection
             .connect(cardName)
             .then((result) => {
@@ -170,6 +173,7 @@ module.exports = function (RED) {
      * Get an instance of an object in Composer. For assets, this method
      * gets the asset from the default asset registry.
      * @param {object} data The data to be retrieved from the blockchain
+     * @param {boolean} resolve Should relationships be resolved
      * @param {node} node The node red node currently being invoked
      * @returns {Promise} A promise
      */
@@ -416,12 +420,18 @@ module.exports = function (RED) {
         RED.nodes.createNode(node, config);
 
         node.on('input', function (msg) {
-            node.log('config ' + config.composerCard);
-            this.composer = RED.nodes.getNode(config.composerCard);
-            node.log('checking config' + this.composer);
-            checkConfig(this.composer)
+            RED.nodes.getNode(config.composerCard)
+                .then((result) => {
+
+                    node.composer = result;
+                    node.log('checking config ' + util.inspect(node.composer, false, null));
+                    return checkConfig(node.composer);
+                })
                 .then(() => {
-                    cardName = this.composer.cardName;
+                    cardName = node.composer.cardName;
+                    node.log('using card: ' + cardName);
+                    cardConfig = node.composer.cardStoreConfig;
+                    node.log('using cardConfig: ' + cardConfig);
 
                     node.log('checking payload');
                     return checkPayLoad(msg.payload, config.actionType);
@@ -444,6 +454,8 @@ module.exports = function (RED) {
 
             node.on('close', () => {
                 node.status({});
+                businessNetworkConnection.disconnect();
+                connected = false;
             });
         });
     }
@@ -460,11 +472,17 @@ module.exports = function (RED) {
         RED.nodes.createNode(node, config);
 
         node.on('input', function (msg) {
-            node.log('checking config');
-            this.composer = RED.nodes.getNode(config.composerCard);
-            checkConfig(this.composer)
+            RED.nodes.getNode(config.composerCard)
+                .then((result) => {
+                    node.composer = result;
+                    node.log('checking config ' + util.inspect(node.composer, false, null));
+                    return checkConfig(node.composer);
+                })
                 .then(() => {
-                    cardName = this.composer.cardName;
+                    cardName = node.composer.cardName;
+                    node.log('using card: ' + cardName);
+                    cardConfig = node.composer.cardStoreConfig;
+                    node.log('using cardConfig: ' + cardConfig);
 
                     return checkPayLoad(msg.payload, config.actionType);
 
@@ -495,6 +513,8 @@ module.exports = function (RED) {
 
             node.on('close', () => {
                 node.status({});
+                businessNetworkConnection.disconnect();
+                connected = false;
             });
         });
     }
@@ -509,14 +529,20 @@ module.exports = function (RED) {
     function HyperledgerComposerInNode (config) {
         let node = this;
         RED.nodes.createNode(node, config);
-        this.composer = RED.nodes.getNode(config.composerCard);
-        node.log('checking config');
-        checkConfig(this.composer)
+
+        RED.nodes.getNode(config.composerCard)
+            .then((result) => {
+                node.composer = result;
+                node.log('checking config ' + util.inspect(this.composer, false, null));
+                return checkConfig(node.composer);
+            })
             .then(() => {
-                cardName = this.composer.cardName;
+                cardName = node.composer.cardName;
+                node.log('using card: ' + cardName);
+                cardConfig = node.composer.cardStoreConfig;
+                node.log('using cardConfig: ' + cardConfig);
 
                 return subscribeToEvents(node);
-
             })
             .catch((error) => {
                 node.status({fill : 'red', shape : 'dot', text : 'error'});
@@ -528,8 +554,9 @@ module.exports = function (RED) {
             node.status({fill : 'red', shape : 'ring', text : 'disconnected'});
             node.log('node was closed so removed event listener');
             businessNetworkConnection.removeListener('event', listener);
+            businessNetworkConnection.disconnect();
+            connected = false;
         });
-
     }
 
     RED.nodes.registerType('hyperledger-composer-in', HyperledgerComposerInNode);
