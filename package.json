@@ -41,13 +41,13 @@
       ".git",
       "node_modules",
       "packages",
-      ".travis/fix_github_https_repo.sh"
+      ".travis/fix_github_https_repo.sh",
+      "markdown-license.txt"
     ],
     "file_type_method": "EXCLUDE",
     "file_types": [
       ".enc",
       ".log",
-      ".md",
       ".yml"
     ],
     "insert_license": false,
@@ -58,6 +58,9 @@
         "eachLine": {
           "prepend": " * "
         }
+      },
+      "md": {
+        "file": "markdown-license.txt"
       }
     }
   }

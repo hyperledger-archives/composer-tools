@@ -37,7 +37,8 @@
 		"file_type_method": "INCLUDE",
 		"file_types": [
       ".js",
-			".sh"
+      ".sh",
+      ".md"
     ],
     "license_formats": {
       "js": {
@@ -46,6 +47,9 @@
         "eachLine": {
           "prepend": " * "
         }
+      },
+      "md": {
+        "file": "../../markdown-license.txt"
       }
     },
 		"insert_license": false

@@ -49,6 +49,7 @@
       ".eslintignore",
       ".gitignore",
       ".npmignore",
+      "README.md",
       "test/data/proto/CreateShipment.proto",
       "test/data/proto/UpdateShipment.proto",
       "test/data/proto/generated_code.proto",
@@ -57,10 +58,7 @@
       "test/data/proto/test_no_namespace.proto"
     ],
     "file_type_method": "EXCLUDE",
-    "file_types": [
-      ".md",
-      ".yml"
-    ],
+    "file_types": [],
     "insert_license": false,
     "license_formats": {
       "editorconfig": {
@@ -74,6 +72,9 @@
         "eachLine": {
           "prepend": " * "
         }
+      },
+      "md": {
+        "file": "../../markdown-license.txt"
       }
     }
   }
