@@ -54,7 +54,6 @@
     ],
     "file_type_method": "EXCLUDE",
     "file_types": [
-      ".md",
       ".yml"
     ],
     "insert_license": false,
@@ -65,6 +64,9 @@
         "eachLine": {
           "prepend": " * "
         }
+      },
+      "md": {
+        "file": "../../markdown-license.txt"
       }
     },
     "output": "/Users/user/Desktop/wallet-out.txt"

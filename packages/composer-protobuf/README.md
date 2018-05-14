@@ -50,3 +50,6 @@ You can batch convert a set of `.proto` files under a root directory by running:
 ### APIs
 
 You can use the `ProtobufConverter` class to convert a single `.proto` file to a single Composer model file, or use the `ProtobufBatchConverter` class to convert all `.proto` files beneath a directory.
+
+## License <a name="license"></a>
+Hyperledger Project source code files are made available under the Apache License, Version 2.0 (Apache-2.0), located in the [LICENSE](LICENSE.txt) file. Hyperledger Project documentation files are made available under the Creative Commons Attribution 4.0 International License (CC-BY-4.0), available at http://creativecommons.org/licenses/by/4.0/.
