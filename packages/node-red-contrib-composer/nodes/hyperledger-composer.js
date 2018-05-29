@@ -197,18 +197,18 @@ module.exports = function (RED) {
 
                             if (resolve) {
                                 if (id == null) {
-                                  return assetRegistry.resolveAll();
+                                    return assetRegistry.resolveAll();
                                 }
                                 else {
-                                  return assetRegistry.resolve(id);
+                                    return assetRegistry.resolve(id);
                                 }
                             } else {
-                              if (id == null) {
-                                return assetRegistry.getAll();
-                              }
-                              else {
-                                return assetRegistry.get(id);
-                              }
+                                if (id == null) {
+                                    return assetRegistry.getAll();
+                                }
+                                else {
+                                    return assetRegistry.get(id);
+                                }
                             }
                         })
                         .then((result) => {
@@ -228,19 +228,19 @@ module.exports = function (RED) {
                         .then((participantRegistry) => {
                             node.log('got participant registry');
                             if (resolve) {
-                              if (id == null) {
-                                return participantRegistry.resolveAll();
-                              }
-                              else {
-                                return participantRegistry.resolve(id);
-                              }
+                                if (id == null) {
+                                    return participantRegistry.resolveAll();
+                                }
+                                else {
+                                    return participantRegistry.resolve(id);
+                                }
                             } else {
-                              if (id == null) {
-                                return participantRegistry.getAll();
-                              }
-                              else {
-                                return participantRegistry.get(id);
-                              }
+                                if (id == null) {
+                                    return participantRegistry.getAll();
+                                }
+                                else {
+                                    return participantRegistry.get(id);
+                                }
                             }
                         })
                         .then((result) => {
@@ -420,7 +420,7 @@ module.exports = function (RED) {
         RED.nodes.createNode(node, config);
 
         node.on('input', function (msg) {
-            RED.nodes.getNode(config.composerCard)
+            RED.nodes.getNode(config.composerCard).ready
                 .then((result) => {
 
                     node.composer = result;
@@ -453,8 +453,11 @@ module.exports = function (RED) {
                 });
 
             node.on('close', () => {
+                node.log('closing node');
                 node.status({});
-                businessNetworkConnection.disconnect();
+                if (businessNetworkConnection) {
+                    businessNetworkConnection.disconnect();
+                }
                 connected = false;
             });
         });
@@ -472,7 +475,7 @@ module.exports = function (RED) {
         RED.nodes.createNode(node, config);
 
         node.on('input', function (msg) {
-            RED.nodes.getNode(config.composerCard)
+            RED.nodes.getNode(config.composerCard).ready
                 .then((result) => {
                     node.composer = result;
                     node.log('checking config ' + util.inspect(node.composer, false, null));
@@ -513,7 +516,9 @@ module.exports = function (RED) {
 
             node.on('close', () => {
                 node.status({});
-                businessNetworkConnection.disconnect();
+                if (businessNetworkConnection) {
+                    businessNetworkConnection.disconnect();
+                }
                 connected = false;
             });
         });
@@ -530,7 +535,7 @@ module.exports = function (RED) {
         let node = this;
         RED.nodes.createNode(node, config);
 
-        RED.nodes.getNode(config.composerCard)
+        RED.nodes.getNode(config.composerCard).ready
             .then((result) => {
                 node.composer = result;
                 node.log('checking config ' + util.inspect(this.composer, false, null));
@@ -552,9 +557,11 @@ module.exports = function (RED) {
 
         node.on('close', () => {
             node.status({fill : 'red', shape : 'ring', text : 'disconnected'});
-            node.log('node was closed so removed event listener');
-            businessNetworkConnection.removeListener('event', listener);
-            businessNetworkConnection.disconnect();
+            if (businessNetworkConnection) {
+                node.log('node was closed so removed event listener');
+                businessNetworkConnection.removeListener('event', listener);
+                businessNetworkConnection.disconnect();
+            }
             connected = false;
         });
     }
