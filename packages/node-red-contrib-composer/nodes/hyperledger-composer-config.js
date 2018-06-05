@@ -65,31 +65,35 @@ module.exports = function (RED) {
     function HyperledgerComposerConfigNode (n) {
         RED.nodes.createNode(this, n);
 
-        this.cardName = n.cardName;
-        this.cardStoreLocation = n.cardStoreLocation;
+        let data = {};
+        data.cardName = n.cardName;
+        data.cardStoreLocation = n.cardStoreLocation;
 
         if (!n.cardStoreConfig || n.cardStoreLocation === 'local') {
-            return Promise.resolve()
+            this.ready = Promise.resolve()
                 .then(() => {
-                    return this;
+                    data.cardStoreConfig = {};
+                    return data;
+                });
+        } else {
+            data.cardStoreConfig = JSON.parse(n.cardStoreConfig);
+            this.log('about to install npm module ' + data.cardStoreConfig.composer.wallet.type);
+            this.ready = exec('npm install ' + data.cardStoreConfig.composer.wallet.type)
+                .then((stdout, stderr) => {
+                    if (stderr) {
+                        throw new Error(stderr);
+                    }
+
+                    this.log('finished installing npm module ' + util.inspect(stdout, false, null));
+                    return data;
+                })
+                .catch((error) => {
+                    this.status({fill : 'red', shape : 'dot', text : 'error'});
+                    this.log(error.message);
                 });
         }
-        this.cardStoreConfig = JSON.parse(n.cardStoreConfig);
 
-        this.log('about to install npm module ' + this.cardStoreConfig.composer.wallet.type);
-        return exec('npm install ' + this.cardStoreConfig.composer.wallet.type)
-            .then((stdout, stderr) => {
-                if (stderr) {
-                    throw new Error(stderr);
-                }
-
-                this.log('finished installing npm module ' + util.inspect(stdout, false, null));
-                return this;
-            })
-            .catch((error) => {
-                this.status({fill : 'red', shape : 'dot', text : 'error'});
-                this.log(error.message);
-            });
+        return this;
     }
 
     /**

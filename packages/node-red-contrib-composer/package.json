@@ -12,6 +12,9 @@
         "eslint": "^3.5.0",
         "license-check-and-add": "~2.3.0"
     },
+    "engines": {
+        "node": ">=8.9.5"
+    },
     "license": "Apache-2.0",
     "repository": {
         "type": "git",
