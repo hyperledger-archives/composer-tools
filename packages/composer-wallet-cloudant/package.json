@@ -1,6 +1,6 @@
 {
   "name": "@ampretia/composer-wallet-cloudant",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Hyperledger Composer Wallet implementation for the IBM Cloud Object Store",
   "engines": {
     "node": ">=8",
@@ -41,7 +41,7 @@
   },
   "dependencies": {
     "@cloudant/cloudant": "2.1.0",
-    "composer-common": "^0.17.3"
+    "composer-common": "^0.19.8"
   },
   "license-check-config": {
     "src": [
