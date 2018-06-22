@@ -46,7 +46,7 @@ Firstly, this module that provides the support to connect from Composer to the O
 This is loaded using a node.js require statment, and the current preview will look for this in the global modules. 
 
 ```
-npm install -g @ampretia/composer-wallet-ibmcos
+npm install -g composer-wallet-ibmcos
 ```
 
 ### *Step 3*
@@ -66,7 +66,7 @@ Assuming that you do not have the config directory already - this is using the s
 {
   "composer": {
     "wallet": {
-      "type": "@ampretia/composer-wallet-ibmcos",
+      "type": "composer-wallet-ibmcos",
       "desc": "Uses the IBM Cloud Object Store",
       "options": {
         "bucketName": "alpha-metal",
@@ -91,7 +91,7 @@ Assuming that you do not have the config directory already - this is using the s
 As this is using the *config* module specifing the details on the command line via environment variables can be achieved by
 
 ```
-export NODE_CONFIG={"composer":{"cardstore":{"type":"@ampretia/composer-wallet-ibmcos","desc":"Uses the IBM Cloud Object Store","options":{"bucketName":"alpha-metal","endpoint":"s3.eu-gb.objectstorage.softlayer.net","apikey":"0viPHOY7LbLNa9eLftrtHPpTjoGv6hbLD1QalRXikliJ","serviceInstanceId":"crn:v1:bluemix:public:cloud-object-storage:global:a/3ag0e9402tyfd5d29761c3e97696b71n:d6f74k03-6k4f-4a82-b165-697354o63903::"}}}}
+export NODE_CONFIG={"composer":{"cardstore":{"type":"composer-wallet-ibmcos","desc":"Uses the IBM Cloud Object Store","options":{"bucketName":"alpha-metal","endpoint":"s3.eu-gb.objectstorage.softlayer.net","apikey":"0viPHOY7LbLNa9eLftrtHPpTjoGv6hbLD1QalRXikliJ","serviceInstanceId":"crn:v1:bluemix:public:cloud-object-storage:global:a/3ag0e9402tyfd5d29761c3e97696b71n:d6f74k03-6k4f-4a82-b165-697354o63903::"}}}}
 ```
 
 The any application (or command line, eg `composer card list`) that is in this shell will use the cloud wallets. 

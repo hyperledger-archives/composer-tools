@@ -19,7 +19,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/hyperledger/composer-wallet-redis.git"
+    "url": "https://github.com/hyperledger/composer-tools"
   },
   "keywords": [
     "blockchain",
