@@ -1,6 +1,6 @@
 {
-  "name": "@ampretia/composer-wallet-cloudant",
-  "version": "0.2.0",
+  "name": "composer-wallet-cloudant",
+  "version": "0.0.13",
   "description": "Hyperledger Composer Wallet implementation for the IBM Cloud Object Store",
   "engines": {
     "node": ">=8",
@@ -18,7 +18,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/ampretia/composer-wallet-cloudant.git"
+    "url": "https://github.com/hyperledger/composer-tools"
   },
   "keywords": [
     "blockchain",

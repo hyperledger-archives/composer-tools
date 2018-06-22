@@ -22,7 +22,7 @@ Also it assumes you are familar with NPM, and the card concept in the Composer
 {
   "composer": {
     "wallet": {
-      "type": "@ampretia/composer-wallet-cloudant",
+      "type": "composer-wallet-cloudant",
       "options": {
         "database": "alpha-metal",
         "username": "xxxxxxxxxxxxxxxxxxxxxxx",
@@ -43,7 +43,7 @@ Firstly, this module that provides the support to connect from Composer to Cloud
 This is loaded using a node.js require statment, and the current preview will look for this in the global modules. 
 
 ```
-npm install -g @ampretia/composer-wallet-cloudant
+npm install -g composer-wallet-cloudant
 ```
 
 ### *Step 3*

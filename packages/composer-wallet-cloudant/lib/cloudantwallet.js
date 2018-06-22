@@ -31,7 +31,7 @@ class CloudantWallet extends Wallet {
      * The constructor is passed the options as configured by the user.  The JSON structure of the configuration is
      * "composer": {
      *    "cardstore": {
-     *    "type": "@ampretia/composer-wallet-ibmcos",
+     *    "type": "composer-wallet-ibmcos",
      *    "desc": "Uses the IBM Cloud Object Store",
      *    "options": {
      *      "bucketName": "alpha-metal",
