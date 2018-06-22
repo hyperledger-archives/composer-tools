@@ -51,7 +51,7 @@ npm install -g @ampretia/composer-wallet-cloudant
 Setup the NODE_CONFIG environment variable to use the Cloudant wallet, and use the service credentials.
 
 ```bash
-$ export NODE_CONFIG=$(cat cardstore-cloundant.json)
+$ export NODE_CONFIG=$(cat cardstore-cloudant.json)
 ```
 
 The any application (or command line, eg `composer card list`) that is in this shell will use the cloud wallets. 
