@@ -1,24 +1,27 @@
 # fabric-dev-servers
 
-This repository contains a number of helper scripts to start up a Hyperledger Fabric v1.1
+This repository contains a number of helper scripts to start up a Hyperledger Fabric v1.2
 network for development purposes. You can use the Hyperledger Fabric network created by these scripts to quickly deploy Blockchain business networks built using Hyperledger Composer, and test applications that depend on a running network.
 
 
 ## Available versions of Hyperledger Fabric
-This dev server package contains scripts to setup 2 different levels of fabric. 
+This dev server package contains scripts to setup 3 different levels of fabric. 
 1. A released version of Hyperledger Fabric V1.0
 2. A released version of Hyperledger Fabric V1.1
+3. A released version of Hyperledger Fabric V1.2
 
-You can select a version by setting the environment variable `HL_FABRIC_VERSION`. If set to `hlfv1` or not set you
-will get Hyperledger Fabric v1.0. If set to `hlfv11` you will get Hyperledger Fabric V1.1
+You can select a version by setting the environment variable `HL_FABRIC_VERSION`. If set to `hlfv1` you will get
+Hyperledger Fabric v1.0. If set to `hlfv11` you will get Hyperledger Fabric V1.1. If set to `hlfv12` or not set you will
+get Hyperledger Fabric V1.2.
 
 If you are using Hyperledger Composer v0.16.x then you will want to use Hyperledger Fabric V1.0. If you are using
-Hyperledger Composer v0.17 or later then you will want to use Hyperledger Fabric V1.1.
+Hyperledger Composer v0.17, v0.18 or v0.19 then you will want to use Hyperledger Fabric V1.1. If you are using
+Hyperledger Composer v0.20 or later then you will want to use Hyperledger Fabric V1.2.
 
 Some of the scripts use the Hyperleder Composer CLI; previously these have used the composer executable that was on the system path. 
 If you are running with a locally installed composer CLI, or a development build this meant that using the scripts could be hard. 
 
-Setting  `HL_COMPOSER_CLI` to the actual version of composer you want will ensure it used. For example for a local install follow this
+Setting `HL_COMPOSER_CLI` to the actual version of composer you want will ensure it used. For example for a local install follow this
 
 ```bash
 $ npm install composer-cli

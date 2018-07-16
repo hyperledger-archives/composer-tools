@@ -63,15 +63,15 @@ COMPOSER_VERSION=$("${HL_COMPOSER_CLI}" --version 2>/dev/null)
 COMPOSER_RC=$?
 
 if [ $COMPOSER_RC -eq 0 ]; then
-    AWKRET=$(echo $COMPOSER_VERSION | awk -F. '{if ($2<19) print "1"; else print "0";}')
+    AWKRET=$(echo $COMPOSER_VERSION | awk -F. '{if ($2<20) print "1"; else print "0";}')
     if [ $AWKRET -eq 1 ]; then
-        echo Cannot use $COMPOSER_VERSION version of composer with fabric 1.1, v0.19 or higher is required
+        echo Cannot use $COMPOSER_VERSION version of composer with fabric 1.2, v0.20 or higher is required
         exit 1
     else
         echo Using composer-cli at $COMPOSER_VERSION
     fi
 else
-    echo 'No version of composer-cli has been detected, you need to install composer-cli at v0.19 or higher'
+    echo 'No version of composer-cli has been detected, you need to install composer-cli at v0.20 or higher'
     exit 1
 fi
 
