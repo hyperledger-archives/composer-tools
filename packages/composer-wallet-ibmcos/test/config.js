@@ -14,6 +14,8 @@
 
 'use strict';
 
+const creds = require('../creds.json');
+
 module.exports.getStore = require('../index.js').getStore;
 module.exports.wrongConfigs = [
     { c: null, text: 'Need configuration' },
@@ -25,26 +27,25 @@ module.exports.wrongConfigs = [
     { c: { endpoint:'xx,',bucketName: 'xx', apikey: 'xx', serviceInstanceId: 'xx' }, text: 'Need an namePrefix in options' }];
 module.exports.correctConfigs=[
     {
-        'bucketName': 'alpha-metal',
-        'endpoint': 's3.eu-gb.objectstorage.softlayer.net',
-        'apikey': 'pPz9i1BKlT_I4A2lBtO2ITwzVPJfObcVI7vtqwlUvkf1',
-        'serviceInstanceId': 'crn:v1:bluemix:public:cloud-object-storage:global:a/f312377c857f745dd4741a70d09a8e4c:fb474f32-8d51-4864-a2e7-459105254cfd::'
+        'bucketName': creds.bucket_name,
+        'endpoint': creds.endpoint,
+        'apikey': creds.apikey,
+        'serviceInstanceId': creds.resource_instance_id
     }
 ];
 module.exports.clean=async ()=>{
 
-
     let objectStoreConfig = {
-        endpoint:'s3.eu-gb.objectstorage.softlayer.net',
-        apiKeyId: 'pPz9i1BKlT_I4A2lBtO2ITwzVPJfObcVI7vtqwlUvkf1',
+        endpoint: creds.endpoint,
+        apiKeyId: creds.apikey,
         ibmAuthEndpoint: 'https://iam.ng.bluemix.net/oidc/token',
-        serviceInstanceId:  'crn:v1:bluemix:public:cloud-object-storage:global:a/f312377c857f745dd4741a70d'
+        serviceInstanceId:  creds.resource_instance_id
     };
     const ObjectStore = require('ibm-cos-sdk');
     let cos = new ObjectStore.S3(objectStoreConfig);
 
     let params = {
-        Bucket: 'alpha-metal'
+        Bucket: creds.bucket_name
     };
     let cardMetaData = await cos.listObjects(params).promise();
 
