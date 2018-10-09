@@ -17,7 +17,7 @@
     "postinstall": "npm run pkgcheck && npm run bootstrap",
     "bootstrap": "lerna bootstrap",
     "pretest": "npm run licchk",
-    "test": "lerna run --ignore '@(composer-protobuf|composer-wallet-cloudant|fabric-dev-servers)'  test",
+    "test": "lerna run --ignore '@(composer-protobuf|composer-wallet-cloudant|composer-wallet-ibmcos|fabric-dev-servers)'  test",
     "pkgcheck": "node ./scripts/pkgcheck.js",
     "pkgstamp": "node ./scripts/pkgstamp.js",
     "pkgbump": "node ./scripts/pkgbump.js && node ./scripts/pkgcheck.js --fix"
