@@ -1,6 +1,6 @@
 {
   "name": "composer-wallet-redis",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "Hyperledger Composer Wallet implementation for Redis",
   "engines": {
     "node": ">=8",
