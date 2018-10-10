@@ -1,6 +1,6 @@
 {
   "name": "composer-protobuf",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "Hyperledger Composer Protobuf support",
   "main": "index.js",
   "private": true,

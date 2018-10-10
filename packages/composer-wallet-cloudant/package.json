@@ -1,6 +1,6 @@
 {
   "name": "composer-wallet-cloudant",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "Hyperledger Composer Wallet implementation for the IBM Cloud Object Store",
   "engines": {
     "node": ">=8",

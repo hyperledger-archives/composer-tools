@@ -1,6 +1,6 @@
 {
   "name": "composer-wallet-ibmcos",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "Hyperledger Composer Wallet implementation for the IBM Cloud Object Store",
   "engines": {
     "node": ">=8",
@@ -39,8 +39,8 @@
     "sinon": "2.3.8"
   },
   "dependencies": {
-    "ibm-cos-sdk": "1.1.1",
-    "composer-common": "^0.17.3"
+    "composer-common": "^0.17.3",
+    "ibm-cos-sdk": "1.1.1"
   },
   "license-check-config": {
     "src": [
