@@ -27,8 +27,8 @@ if [ "${HL_FABRIC_START_TIMEOUT}" ]; then
 fi
 
 if [ -z ${FABRIC_VERSION+x} ]; then
- echo "FABRIC_VERSION is unset, assuming hlfv12"
- export FABRIC_VERSION="hlfv12"
+ echo "FABRIC_VERSION is unset, assuming hlfv13"
+ export FABRIC_VERSION="hlfv13"
 else
  echo "FABRIC_VERSION is set to '$FABRIC_VERSION'"
 fi
