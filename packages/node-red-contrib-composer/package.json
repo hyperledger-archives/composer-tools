@@ -3,9 +3,9 @@
   "version": "0.0.14",
   "description": "Hyperledger Composer nodes for node-red",
   "dependencies": {
-    "composer-admin": "^0.19.0-0",
-    "composer-client": "^0.19.0-0",
-    "composer-common": "^0.19.0-0",
+    "composer-admin": "^0.20.7",
+    "composer-client": "^0.20.7",
+    "composer-common": "^0.20.7",
     "formidable": "1.1.1"
   },
   "devDependencies": {
