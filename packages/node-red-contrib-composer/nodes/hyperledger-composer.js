@@ -245,7 +245,11 @@ module.exports = function (RED) {
                         })
                         .then((result) => {
                             node.log('got participant');
-                            return serializer.toJSON(result);
+                            if (resolve) {
+                                return result;
+                            } else {
+                                return serializer.toJSON(result);
+                            }
                         })
                         .catch((error) => {
                             throw(error);
