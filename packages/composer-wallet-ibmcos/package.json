@@ -31,7 +31,7 @@
     "chai": "3.5.0",
     "chai-as-promised": "6.0.0",
     "chai-things": "0.2.0",
-    "eslint": "3.17.1",
+    "eslint": "4.18.2",
     "license-check": "1.1.5",
     "lodash.clonedeep": "4.5.0",
     "mocha": "3.4.2",
