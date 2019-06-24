@@ -109,7 +109,7 @@ $ export FABRIC_START_TIMEOUT=30
 Issue from the `fabric-tools` directory:
 
 ```
-$ ./stop.sh
+$ ./stopFabric.sh
 ```
 
 ### Create Hyperledger Composer PeerAdmin card
